@@ -4,5 +4,12 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FFF"
+        android:text="NewsWire"
+        />
 
 </android.support.v7.widget.Toolbar>
