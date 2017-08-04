@@ -2,11 +2,15 @@ package com.developinggeek.thebetterlawyernewsapp.Activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,12 +36,13 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
 {
 
+    private ActionBar actionBar;
     private Toolbar mToolbar;
     private ViewPager mPager;
     private MainPageAdapter mPageAdapter;
     private TabLayout mTabLayout;
     private MaterialSearchView searchView;
-    private ApiInterface apiInterface;
+    private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,9 +50,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mToolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("NewsWire");
+        actionBar = getSupportActionBar();
+
+        collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
+        dynamicToolbarColor();
+
+        toolbarTextAppearance();
 
         mPager = (ViewPager)findViewById(R.id.main_pager);
         mPageAdapter = new MainPageAdapter(getSupportFragmentManager());
@@ -55,6 +67,32 @@ public class MainActivity extends AppCompatActivity
 
         mTabLayout = (TabLayout)findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mPager);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int index = tab.getPosition();
+
+                switch (index)
+                {
+                    case 0 : actionBar.setTitle("Recent");
+                        break;
+
+                    case 1 : actionBar.setTitle("Blank");
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         searchView = (MaterialSearchView)findViewById(R.id.main_search_view);
 
@@ -75,6 +113,41 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void toolbarTextAppearance() {
+
+        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.collapsedappbar);
+        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.expandedappbar);
+
+    }
+
+    private void dynamicToolbarColor() {
+        Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.default_thumb);
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(0));
+                collapsingToolbarLayout.setStatusBarScrimColor(palette.getMutedColor(1));
+
+            }
+        });
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int index = mPager.getCurrentItem();
+
+        switch (index)
+        {
+            case 0 : actionBar.setTitle("Recent");
+                break;
+
+            case 1 : actionBar.setTitle("Blank");
+                break;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
