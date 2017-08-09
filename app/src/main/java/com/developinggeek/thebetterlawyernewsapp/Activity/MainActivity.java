@@ -4,10 +4,17 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -16,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -44,16 +52,17 @@ public class MainActivity extends AppCompatActivity
     private MaterialSearchView searchView;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mToolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
         actionBar = getSupportActionBar();
+        actionBar.setTitle("NewsWire App");
 
         collapsingToolbarLayout=(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
@@ -67,32 +76,6 @@ public class MainActivity extends AppCompatActivity
 
         mTabLayout = (TabLayout)findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mPager);
-
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int index = tab.getPosition();
-
-                switch (index)
-                {
-                    case 0 : actionBar.setTitle("Recent");
-                        break;
-
-                    case 1 : actionBar.setTitle("Blank");
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         searchView = (MaterialSearchView)findViewById(R.id.main_search_view);
 
@@ -111,6 +94,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+
     }
 
     private void toolbarTextAppearance() {
@@ -124,30 +109,27 @@ public class MainActivity extends AppCompatActivity
         Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.default_thumb);
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
             @Override
-            public void onGenerated(Palette palette) {
-                collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(0));
-                collapsingToolbarLayout.setStatusBarScrimColor(palette.getMutedColor(1));
+            public void onGenerated(Palette palette)
+            {
 
+                Palette.Swatch vibrant =
+                        palette.getVibrantSwatch();
+
+
+
+                if (vibrant != null) {
+                    // If we have a vibrant color
+                    // update the title TextView
+
+                    collapsingToolbarLayout.setBackgroundColor(Color.parseColor("#3F51B5"));
+                    collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(palette.getMutedColor(1)));
+                    collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(palette.getMutedColor(0)));
+
+                }
             }
         });
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        int index = mPager.getCurrentItem();
-
-        switch (index)
-        {
-            case 0 : actionBar.setTitle("Recent");
-                break;
-
-            case 1 : actionBar.setTitle("Blank");
-                break;
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -164,4 +146,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
+
 }
