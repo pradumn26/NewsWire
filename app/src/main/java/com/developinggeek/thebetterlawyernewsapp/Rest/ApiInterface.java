@@ -16,4 +16,7 @@ public interface ApiInterface
     @GET("get_recent_posts/")
     Call<PostsResponse> getRecentPosts();
 
+    @GET("get_search_results/")
+    Call<PostsResponse> getSearchResults(@Query("search") String val);
+
 }

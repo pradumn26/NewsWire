@@ -1,7 +1,10 @@
 package com.developinggeek.thebetterlawyernewsapp.Adapter;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.developinggeek.thebetterlawyernewsapp.Activity.ReadRecentNewsActivity;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
 import com.developinggeek.thebetterlawyernewsapp.R;
+import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -37,12 +42,29 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecentNewsAdapter.Ne
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position)
+    public void onBindViewHolder(NewsViewHolder holder, final int position)
     {
         holder.title.setText(posts.get(position).getTitle());
         holder.brief.setText(posts.get(position).getExcerpt());
-        String imgUrl = posts.get(position).getThumbnail();
+        final String imgUrl = posts.get(position).getThumbnail();
         Picasso.with(mContext).load(imgUrl).into(holder.img);
+        final View sharedView = holder.img;
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(mContext, ReadRecentNewsActivity.class);
+                intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO, imgUrl);
+                intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE, posts.get(position).getTitle());
+                intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT, posts.get(position).getContent());
+                intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_NAME, posts.get(position).getAuthor().getName());
+                intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTVITY_AUTHOR_DESCRIPTION, posts.get(position).getAuthor().getDesp());
+                intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL,posts.get(position).getAuthor().getUrl());
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
+                mContext.startActivity(intent, activityOptionsCompat.toBundle());
+            }
+        });
     }
 
     @Override

@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Posts
 {
+    @SerializedName("author")
+    private Author author;
+
     @SerializedName("id")
     private Integer id;
 
@@ -66,6 +69,14 @@ public class Posts
         this.commentCount = commentCount;
         this.commentStatus = commentStatus;
         this.thumbnail = thumbnail;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public Integer getId() {
