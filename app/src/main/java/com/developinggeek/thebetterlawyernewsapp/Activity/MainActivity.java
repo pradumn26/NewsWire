@@ -1,5 +1,6 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -191,6 +192,13 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        int id = item.getItemId();
+
+        switch(id)
+        {
+          case R.id.categories : startActivity(new Intent(MainActivity.this , AllCategories.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -205,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             mTabLayout.setVisibility(View.INVISIBLE);
             Log.i("view","invisible");
 
-            actionBar.setTitle("");
         }
         else
         {
@@ -214,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             mTabLayout.setVisibility(View.VISIBLE);
             Log.i("view","visible");
 
-            actionBar.setTitle("NewsWire App");
         }
 
     }

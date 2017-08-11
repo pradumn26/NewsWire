@@ -9,4 +9,7 @@
         app:showAsAction="always"
         android:title="Search" />
 
+    <item android:title="Categories"
+          android:id="@+id/categories" />
+
 </menu>

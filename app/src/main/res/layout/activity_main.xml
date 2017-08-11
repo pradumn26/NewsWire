@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
     tools:context="com.developinggeek.thebetterlawyernewsapp.Activity.MainActivity">
 
         <android.support.v4.view.ViewPager
@@ -39,7 +37,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    android:id="@+id/main_collapse_news_list"
-                   app:layout_collapseMode="parallax">
+                   >
                </android.support.v7.widget.RecyclerView>
 
                 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -47,6 +45,7 @@
                     android:id="@+id/main_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     app:layout_collapseMode="pin"
                     app:theme="@style/CustomActionBar">
 
@@ -56,6 +55,7 @@
                     android:id="@+id/main_search_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     android:visibility="visible" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -76,10 +76,10 @@
                 android:id="@+id/main_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="10dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:tabSelectedTextColor="@color/colorPrimary"
                 app:tabTextColor="#000"
+                app:tabIndicatorColor="@color/colorPrimary"
                 android:visibility="gone">
 
             </android.support.design.widget.TabLayout>

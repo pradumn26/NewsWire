@@ -10,7 +10,7 @@
 
     <string name="action_settings">Settings</string>
 
-    <string-array name="nav_bar_titles">
+    <string-array name="navigation_drawer_items_array">
         <item>Home</item>
         <item>Photos</item>
         <item>Movies</item>
