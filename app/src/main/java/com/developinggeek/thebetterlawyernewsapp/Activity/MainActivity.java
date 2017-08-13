@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         setContentView(R.layout.activity_main);
 
+        //push trial
+
         mToolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
         actionBar = getSupportActionBar();
