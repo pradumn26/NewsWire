@@ -19,4 +19,7 @@ public interface ApiInterface
     @GET("get_search_results/")
     Call<PostsResponse> getSearchResults(@Query("search") String val);
 
+    @GET("get_category_posts/")
+    Call<PostsResponse> getCategoryById(@Query("id") String id);
+
 }

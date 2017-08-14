@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,45 +22,41 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecentFragment extends Fragment
-{
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class GovernmentNewsFragment extends Fragment {
 
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
 
-    public RecentFragment() {
-        // Required empty public constructor
-    }
-
+    public GovernmentNewsFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_recent, container, false);
+        View view = inflater.inflate(R.layout.fragment_government_news, container, false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recent_news_list);
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.government_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
-        fetchRecentNews();
+        fetchGovernmentNews();
 
         return view;
-
     }
 
-    private void fetchRecentNews()
+    private void fetchGovernmentNews()
     {
-
-        Call<PostsResponse> call = apiInterface.getRecentPosts();
+        Call<PostsResponse> call = apiInterface.getCategoryById("2868+807");
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
-
                 List<Posts> posts = response.body().getPosts();
 
                 mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
@@ -72,7 +67,6 @@ public class RecentFragment extends Fragment
 
             }
         });
-
     }
 
 }

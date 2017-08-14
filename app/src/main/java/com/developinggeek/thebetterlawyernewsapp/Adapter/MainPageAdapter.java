@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.developinggeek.thebetterlawyernewsapp.Fragments.BlankFragment;
 import com.developinggeek.thebetterlawyernewsapp.Fragments.BriefsFragment;
+import com.developinggeek.thebetterlawyernewsapp.Fragments.GovernmentNewsFragment;
 import com.developinggeek.thebetterlawyernewsapp.Fragments.RecentFragment;
 
 
@@ -23,11 +23,11 @@ public class MainPageAdapter extends FragmentPagerAdapter
             case 0 : RecentFragment recentFragment = new RecentFragment();
                      return recentFragment;
 
-            case 1 : BriefsFragment briefsFragment = new BriefsFragment();
+            case 2 : BriefsFragment briefsFragment = new BriefsFragment();
                      return briefsFragment;
 
-            case 2 : BlankFragment blankFragment = new BlankFragment();
-                     return blankFragment;
+            case 1 : GovernmentNewsFragment governmentNewsFragment = new GovernmentNewsFragment();
+                     return governmentNewsFragment;
 
             default : return null;
         }
@@ -47,9 +47,9 @@ public class MainPageAdapter extends FragmentPagerAdapter
         {
             case 0 : return "Recent";
 
-            case 1 : return "Briefs";
+            case 1 : return "Government";
 
-            case 2 : return "Blank";
+            case 2 : return "Briefs";
         }
 
         return super.getPageTitle(position);

@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/read_news_activity_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:scaleType="centerCrop"
                 android:transitionName="newsPhotoTransitionFromMainActivityToReadNewsActivity" />
         </android.support.v7.widget.CardView>
@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="serif"
                     android:textColor="#000"
+                    android:textAlignment="center"
                     android:textIsSelectable="true"
                     android:textSize="25sp"
                     android:textStyle="bold" />

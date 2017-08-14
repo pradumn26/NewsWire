@@ -6,8 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import com.developinggeek.thebetterlawyernewsapp.Adapter.CollapseNewsAdapter;
-import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Adapter.SearchNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
 import com.developinggeek.thebetterlawyernewsapp.Model.PostsResponse;

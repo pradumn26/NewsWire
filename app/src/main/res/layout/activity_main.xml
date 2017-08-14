@@ -4,78 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.developinggeek.thebetterlawyernewsapp.Activity.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/main_coordinator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/main_pager"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_app_bar"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        </android.support.v4.view.ViewPager>
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/main_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/main_collapse_news_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_collapseMode="parallax"> </android.support.v7.widget.RecyclerView>
-
-                <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/main_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:theme="@style/CustomActionBar">
-
-                </android.support.v7.widget.Toolbar>
-
-                <com.miguelcatalan.materialsearchview.MaterialSearchView
-                    android:id="@+id/main_search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible" />
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
-
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_linear_layout"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:visibility="visible">
+        android:clipChildren="false"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/CustomActionBar">
+
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/main_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
+
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/main_tabs"
@@ -83,11 +35,19 @@
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:visibility="visible"
-            app:tabSelectedTextColor="@color/colorAccent"
-            >
-
+            app:tabSelectedTextColor="@color/colorAccent">
         </android.support.design.widget.TabLayout>
 
-    </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_app_bar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </android.support.v4.view.ViewPager>
+
 
 </RelativeLayout>
