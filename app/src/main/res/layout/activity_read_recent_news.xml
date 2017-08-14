@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/read_news_activity_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:transitionName="newsPhotoTransitionFromMainActivityToReadNewsActivity" />
         </android.support.v7.widget.CardView>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/brief_img"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_thumb" />
+
+        <TextView
+            android:id="@+id/brief_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="SC rules, Pollution Under Control Certificate must for renewal of Vehicle Insurance"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <org.sufficientlysecure.htmltextview.HtmlTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/brief_content"
+            android:textSize="16sp"
+            android:text="August 13,2017: Apex Court Bench directed that no insurance shall be granted to vehicles without valid PUC certificates. PUC certificates Cracking down on the vehicular pollution, Supreme Court has made it mandatory for the vehicle owners to produce the Pollution Under Control (PUC) certificates for Annual Insurance Renewal. The Apex Court Bench comprising of Justice Madan"
+            android:layout_marginBottom="8dp"
+            />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

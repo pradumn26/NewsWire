@@ -45,7 +45,7 @@ public class CollapseNewsAdapter extends RecyclerView.Adapter<CollapseNewsAdapte
         holder.tv_news.setText(posts.get(position).getTitle().toString());
 
         Picasso.with(mContext).load(posts.get(position).getThumbnail()).into(holder.img);
-        Picasso.with(mContext).load(posts.get(position).getThumbnail()).into(holder.imgSmall);
+       // Picasso.with(mContext).load(posts.get(position).getThumbnail()).into(holder.imgSmall);
     }
 
     @Override
