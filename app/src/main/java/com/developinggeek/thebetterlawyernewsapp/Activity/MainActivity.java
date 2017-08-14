@@ -68,9 +68,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         if (Build.VERSION.SDK_INT >= 21)
             getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
 
-        setContentView(R.layout.activity_main);
-
-        //push trial
+        setContentView(R.layout.drawer_layout_in_main_activity);
 
         mToolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
