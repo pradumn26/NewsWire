@@ -22,4 +22,6 @@ public interface ApiInterface
     @GET("get_category_posts/")
     Call<PostsResponse> getCategoryById(@Query("id") String id);
 
+
+
 }

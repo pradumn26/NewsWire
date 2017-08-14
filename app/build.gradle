@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.developinggeek.thebetterlawyernewsapp"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -39,5 +39,6 @@ dependencies {
     compile 'jp.wasabeef:blurry:2.1.1'
     compile 'org.sufficientlysecure:html-textview:3.4'
     compile 'com.thefinestartist:finestwebview:1.2.7'
+    compile 'com.github.jgabrielfreitas:BlurImageView:1.0.1'
     testCompile 'junit:junit:4.12'
 }
