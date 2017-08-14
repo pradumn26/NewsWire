@@ -22,37 +22,38 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class SupremeCourt extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class InternationalFragment extends Fragment {
 
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
 
-    public SupremeCourt() {
 
-    }
+    public InternationalFragment() {}
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view= inflater.inflate(R.layout.fragment_supreme_court, container, false);
+                             Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.fragment_international, container, false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.SupremeCourtList);
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.international_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
-        fetchGovernmentNews();
+        fetchInternationalNews();
 
         return view;
     }
 
-    private void fetchGovernmentNews()
+    private void fetchInternationalNews()
     {
-        Call<PostsResponse> call = apiInterface.getCategoryById("34+74");
+        Call<PostsResponse> call = apiInterface.getCategoryById("3216");
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
