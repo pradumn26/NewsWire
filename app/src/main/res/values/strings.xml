@@ -10,12 +10,4 @@
 
     <string name="action_settings">Settings</string>
 
-    <string-array name="navigation_drawer_items_array">
-        <item>Home</item>
-        <item>Photos</item>
-        <item>Movies</item>
-        <item>Notifications</item>
-        <item>Settings</item>
-    </string-array>
-
 </resources>

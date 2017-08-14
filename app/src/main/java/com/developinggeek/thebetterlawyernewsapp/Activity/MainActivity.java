@@ -1,40 +1,36 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.CollapseNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Adapter.MainPageAdapter;
-import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
 import com.developinggeek.thebetterlawyernewsapp.Model.PostsResponse;
 import com.developinggeek.thebetterlawyernewsapp.R;
@@ -42,14 +38,14 @@ import com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener
+{
 
     private CollapseNewsAdapter mAdapter;
     private ActionBar actionBar;
@@ -97,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
+        checkConnection();
+
         fetchPopularNews();
 
         searchView = (MaterialSearchView)findViewById(R.id.main_search_view);
@@ -106,7 +104,9 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                Toast.makeText(MainActivity.this, "search results", Toast.LENGTH_LONG).show();
+                Intent searchIntent = new Intent(MainActivity.this , SearchActivity.class);
+                searchIntent.putExtra("category",query);
+                startActivity(searchIntent);
 
                 return true;
             }
@@ -118,6 +118,32 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         });
 
     }
+
+
+    public void checkConnection()
+    {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if(netInfo != null && netInfo.isConnectedOrConnecting()){
+            Toast.makeText(MainActivity.this, "Connection Established", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+            alert.setTitle(Html.fromHtml("<font color='#00AEA3'>No Internet</font>"));
+            alert.setMessage(Html.fromHtml("<font color='#00AEA3'>Please check your Internet Connection</font>"));
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alert.show();
+
+        }
+    }
+
 
     private void fetchPopularNews() {
         Call<PostsResponse> call = apiInterface.getSearchResults("india");
@@ -142,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
         });
 
     }
-
 
 
     private void toolbarTextAppearance() {
@@ -196,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
 
         switch(id)
         {
-          case R.id.categories : startActivity(new Intent(MainActivity.this , AllCategories.class));
+            case R.id.categories : startActivity(new Intent(MainActivity.this , AllCategories.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -206,22 +231,17 @@ public class MainActivity extends AppCompatActivity implements AppBarLayout.OnOf
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
-        if (verticalOffset == 0)
-        {
-            LinearLayout linearLayout=(LinearLayout) findViewById(R.id.main_linear_layout);
-            linearLayout.setVisibility(View.INVISIBLE);
-            mTabLayout.setVisibility(View.INVISIBLE);
-            Log.i("view","invisible");
+        LinearLayout linearLayout=(LinearLayout) findViewById(R.id.main_linear_layout);
 
+        if(collapsingToolbarLayout.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(collapsingToolbarLayout)) {
+            collapsingToolbarLayout.setTitle("NewsWire App");
+            linearLayout.animate().alpha(1).setDuration(10);
         }
-        else
-        {
-            LinearLayout linearLayout=(LinearLayout) findViewById(R.id.main_linear_layout);
-            linearLayout.setVisibility(View.VISIBLE);
-            mTabLayout.setVisibility(View.VISIBLE);
-            Log.i("view","visible");
-
+        else {
+            collapsingToolbarLayout.setTitle(" ");
+            linearLayout.animate().alpha(0).setDuration(10);
         }
-
     }
+
+
 }

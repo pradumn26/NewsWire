@@ -65,10 +65,11 @@ public class AllCategories extends AppCompatActivity {
     }
 
     private void initData() {
-        categoryList.add(new Category("civil War", "http://www.disneytouristblog.com/wp-content/uploads/2016/05/captain_america_civil_war.jpg"));
-        categoryList.add(new Category("Batman vs Superman", "https://upload.wikimedia.org/wikipedia/en/2/20/Batman_v_Superman_poster.jpg"));
-        categoryList.add(new Category("Wonder Woman", "https://upload.wikimedia.org/wikipedia/en/e/ed/Wonder_Woman_%282017_film%29.jpg"));
-        categoryList.add(new Category("Spider Man", "https://i.ytimg.com/vi/K4zm30yeHHE/maxresdefault.jpg"));
-
+        categoryList.add(new Category("Environment", "https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"));
+        categoryList.add(new Category("Politics", "https://betanews.com/wp-content/uploads/2014/05/politician-292x300.jpg"));
+        categoryList.add(new Category("Movies", "https://www.mbatious.com/uploads/files/1497349879912-movies.jpg"));
+        categoryList.add(new Category("World", "https://pbs.twimg.com/profile_images/587949417577066499/3uCD4xxY.jpg"));
+        categoryList.add(new Category("Technology", "http://www.robertwmills.com/wp-content/uploads/2016/03/healthcare-technology-8-04-2015.jpg"));
     }
+
 }

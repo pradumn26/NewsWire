@@ -2,9 +2,10 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:id="@+id/recent_list_container"
     android:layout_marginBottom="10dp"
-    >
+    android:background="@color/cardview_light_background"
+    android:id="@+id/search_news_container">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
             android:layout_height="150dp"
             android:src="@drawable/default_thumb"
             android:scaleType="centerCrop"
-            android:id="@+id/recent_news_image"
+            android:id="@+id/search_news_image"
             android:transitionName="shared_news_photo_transition"
             />
 
@@ -28,18 +29,8 @@
             android:textSize="16sp"
             android:fontFamily="serif"
             android:textStyle="bold"
-            android:id="@+id/recent_news_title"
+            android:id="@+id/search_news_title"
             android:text="Govt Cannot Track Citizens Using Aadhaar Data As It Is Technically Impossible: UIDAI"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="On August 1, the agency that handles the biometric information told a nine-judge bench of the Supreme Court that the government cannot track or spy on citizens using Aadhaar data as it is technically impossible. Aadhaar naysayers argue that its mandatory all-pervasive nature would make India a totalitarian state as it would give the government"
-            android:maxLines="3"
-            android:id="@+id/recent_news_brief"
-            android:visibility="gone"
             />
 
     </LinearLayout>
