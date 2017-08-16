@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,9 @@ import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.MainPageAdapter;
@@ -26,6 +29,8 @@ import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialSearchView searchView;
     private ApiInterface apiInterface;
     private ImageView logoImageView;
+    private ListView navigationViewListView;
+    private ArrayAdapter<String> listViewArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21)
             getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.drawer_layout_in_main_activity);
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
@@ -93,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        navigationViewListView= (ListView) findViewById(R.id.listView_in_navigationView);
+        ArrayList<String> navigationViewItems= new ArrayList<>();
+        navigationViewItems.add("Home");
+        navigationViewItems.add("Categories");
+        navigationViewItems.add("Home");
+        navigationViewItems.add("Categories");
+        navigationViewItems.add("Home");
+        navigationViewItems.add("Categories");
+        navigationViewItems.add("Home");
+        navigationViewItems.add("Categories");
+        navigationViewItems.add("Home");
+        navigationViewItems.add("Categories");
+        listViewArrayAdapter= new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,navigationViewItems);
+        navigationViewListView.setAdapter(listViewArrayAdapter);
     }
 
 
