@@ -1,10 +1,12 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionInflater;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.SearchNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
@@ -31,6 +33,8 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21)
+            getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
         setContentView(R.layout.activity_search);
 
         category = getIntent().getStringExtra("category");
@@ -62,7 +66,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 List<Posts> posts = response.body().getPosts();
 
-                mAdapter = new SearchNewsAdapter(posts , getApplicationContext());
+                mAdapter = new SearchNewsAdapter(posts , SearchActivity.this);
 
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();

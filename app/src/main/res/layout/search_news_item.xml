@@ -19,7 +19,7 @@
             android:src="@drawable/default_thumb"
             android:scaleType="centerCrop"
             android:id="@+id/search_news_image"
-            android:transitionName="shared_news_photo_transition"
+            android:transitionName="newsPhotoTransitionFromMainActivityToReadNewsActivity"
             />
 
         <TextView

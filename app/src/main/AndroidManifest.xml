@@ -12,29 +12,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity
+            android:name=".Activity.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensor"
             android:theme="@style/FinestWebViewTheme.Light" />
-
-        <activity android:name=".Activity.ReadRecentNewsActivity" />
-
-        <activity android:name=".Activity.AllCategories"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-
-        <activity android:name=".Activity.SearchActivity"> </activity>
-
+        <activity android:name=".Activity.ReadRecentNewsActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Activity.AllCategories"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:launchMode="singleTask"/>
+        <activity android:name=".Activity.SearchActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".Activity.SingleCategory"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

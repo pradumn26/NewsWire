@@ -1,6 +1,7 @@
 package com.developinggeek.thebetterlawyernewsapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.developinggeek.thebetterlawyernewsapp.Activity.SingleCategory;
 import com.developinggeek.thebetterlawyernewsapp.Model.Categories;
 import com.developinggeek.thebetterlawyernewsapp.R;
+import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -34,12 +37,14 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.textView.setText(mCategories.get(position).getTitle());
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent= new Intent(mContext, SingleCategory.class);
+                intent.putExtra(AppConstants.SINGLE_CATEGORY_ID_STRING,mCategories.get(position).getId()+"");
+                mContext.startActivity(intent);
             }
         });
     }

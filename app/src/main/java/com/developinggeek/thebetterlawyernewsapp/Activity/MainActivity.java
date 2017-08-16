@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +30,7 @@ import com.developinggeek.thebetterlawyernewsapp.Adapter.MainPageAdapter;
 import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
+import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -42,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialSearchView searchView;
     private ApiInterface apiInterface;
     private ImageView logoImageView;
-    private ListView navigationViewListView;
-    private ArrayAdapter<String> listViewArrayAdapter;
+    NavigationView navigationView;
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,51 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout_in_mainActivity);
+        navigationView = (NavigationView) findViewById(R.id.navigationView_in_mainActivity);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+
+                switch (itemId) {
+                    case R.id.Home:
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.Recent:
+                        startSingleCategoryActvityById("14");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.Government:
+                        startSingleCategoryActvityById("2868+807");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.International:
+                        startSingleCategoryActvityById("3216");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.SupremeCourt:
+                        startSingleCategoryActvityById("34+74");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.HighCourt:
+                        startSingleCategoryActvityById("46+7191+241+71+1800+98+188+741+344+4198+288+804+137+2200+1283+2317+3683+8823+5298+4556+1999+3077");
+                        drawerLayout.closeDrawers();
+                        break;
+                    default:
+                        drawerLayout.closeDrawers();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void startSingleCategoryActvityById(String id) {
+        Intent intent = new Intent(MainActivity.this, SingleCategory.class);
+        intent.putExtra(AppConstants.SINGLE_CATEGORY_ID_STRING, id);
+        startActivity(intent);
     }
 
 
