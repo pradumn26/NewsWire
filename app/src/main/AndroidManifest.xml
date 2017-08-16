@@ -29,7 +29,8 @@
 
         <activity android:name=".Activity.ReadRecentNewsActivity" />
 
-        <activity android:name=".Activity.AllCategories" />
+        <activity android:name=".Activity.AllCategories"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity android:name=".Activity.SearchActivity"> </activity>
 

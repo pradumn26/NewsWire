@@ -2,12 +2,17 @@ package com.developinggeek.thebetterlawyernewsapp.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by DELL-PC on 8/4/2017.
  */
 
 public class Posts
 {
+    @SerializedName("categories")
+    private ArrayList<Categories> categories;
+
     @SerializedName("author")
     private Author author;
 
@@ -183,4 +188,11 @@ public class Posts
         this.thumbnail = thumbnail;
     }
 
+    public ArrayList<Categories> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<Categories> categories) {
+        this.categories = categories;
+    }
 }

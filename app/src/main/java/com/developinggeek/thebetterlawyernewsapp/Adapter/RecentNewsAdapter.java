@@ -4,6 +4,7 @@ package com.developinggeek.thebetterlawyernewsapp.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -61,6 +62,11 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecentNewsAdapter.Ne
                 intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_NAME, posts.get(position).getAuthor().getName());
                 intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTVITY_AUTHOR_DESCRIPTION, posts.get(position).getAuthor().getDesp());
                 intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL,posts.get(position).getAuthor().getUrl());
+
+                Bundle b = new Bundle();
+                b.putSerializable(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST,posts.get(position).getCategories());
+                intent.putExtras(b);
+
                 ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
                 mContext.startActivity(intent, activityOptionsCompat.toBundle());
             }

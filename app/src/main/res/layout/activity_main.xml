@@ -21,12 +21,26 @@
             android:layout_height="?attr/actionBarSize"
             app:theme="@style/CustomActionBar">
 
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/main_search_view"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible" />
+                android:layout_height="match_parent">
 
+                <com.miguelcatalan.materialsearchview.MaterialSearchView
+                    android:id="@+id/main_search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible" >
+
+                    <ImageView
+                        android:visibility="visible"
+                        android:id="@+id/logoImageView"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/logo" />
+                </com.miguelcatalan.materialsearchview.MaterialSearchView>
+
+            </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
@@ -34,10 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:visibility="visible"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/colorAccent">
-        </android.support.design.widget.TabLayout>
+            android:visibility="visible"
+            app:tabSelectedTextColor="@color/colorAccent"/>
 
     </android.support.design.widget.AppBarLayout>
 
