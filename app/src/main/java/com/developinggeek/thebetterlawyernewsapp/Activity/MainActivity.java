@@ -99,21 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        navigationViewListView= (ListView) findViewById(R.id.listView_in_navigationView);
-        ArrayList<String> navigationViewItems= new ArrayList<>();
-        navigationViewItems.add("Home");
-        navigationViewItems.add("Categories");
-        navigationViewItems.add("Home");
-        navigationViewItems.add("Categories");
-        navigationViewItems.add("Home");
-        navigationViewItems.add("Categories");
-        navigationViewItems.add("Home");
-        navigationViewItems.add("Categories");
-        navigationViewItems.add("Home");
-        navigationViewItems.add("Categories");
-        listViewArrayAdapter= new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,navigationViewItems);
-        navigationViewListView.setAdapter(listViewArrayAdapter);
     }
 
 

@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/Home"
-            android:title="Home"/>
-    </group>
+    <item android:title="General">
+        <menu>
+            <item
+                android:id="@+id/Home"
+                android:title="Home"/>
+            <item
+                android:id="@+id/Recent"
+                android:title="Recent"/>
+            <item
+                android:id="@+id/Government"
+                android:title="Government"/>
+            <item
+                android:id="@+id/International"
+                android:title="International"/>
+            <item
+                android:id="@+id/SupremeCourt"
+                android:title="Supreme Court"/>
+            <item
+                android:id="@+id/HighCourt"
+                android:title="High Court"/>
+            <item
+                android:id="@+id/Briefs"
+                android:title="Briefs"/>
+        </menu>
+    </item>
+
+    <item android:title="About">
+        <menu>
+            <item
+                android:id="@+id/AboutUs"
+                android:title="About Us"/>
+        </menu>
+    </item>
 </menu>
