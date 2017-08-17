@@ -1,5 +1,6 @@
 package com.developinggeek.thebetterlawyernewsapp.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -44,6 +45,7 @@ public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<Categori
             public void onClick(View view) {
                 Intent intent= new Intent(mContext, SingleCategory.class);
                 intent.putExtra(AppConstants.SINGLE_CATEGORY_ID_STRING,mCategories.get(position).getId()+"");
+                ((Activity) mContext).finish();
                 mContext.startActivity(intent);
             }
         });

@@ -68,7 +68,7 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecentNewsAdapter.Ne
                 intent.putExtras(b);
 
                 ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
-                mContext.startActivity(intent, activityOptionsCompat.toBundle());
+                mContext.startActivity(intent,activityOptionsCompat.toBundle());
             }
         });
     }
@@ -92,7 +92,7 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecentNewsAdapter.Ne
             title = (TextView)itemView.findViewById(R.id.recent_news_title);
             brief = (TextView)itemView.findViewById(R.id.recent_news_brief);
             img = (ImageView)itemView.findViewById(R.id.recent_news_image);
-            view = itemView.findViewById(R.id.recent_list_container);
+            view = itemView;
         }
 
     }

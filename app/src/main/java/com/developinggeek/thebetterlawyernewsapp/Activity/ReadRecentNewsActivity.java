@@ -84,5 +84,4 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         categoriesRecyclerViewAdapter= new CategoriesRecyclerViewAdapter(ReadRecentNewsActivity.this,categories);
         categoryRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
     }
-
 }

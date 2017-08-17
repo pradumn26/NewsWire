@@ -1,9 +1,12 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionInflater;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
@@ -27,6 +30,8 @@ public class SingleCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= 21)
+            getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
         setContentView(R.layout.activity_single_category);
 
         categoryIdString= getIntent().getStringExtra(AppConstants.SINGLE_CATEGORY_ID_STRING);
@@ -37,10 +42,10 @@ public class SingleCategory extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(SingleCategory.this));
         mRecyclerView.setHasFixedSize(true);
 
-        fetchGovernmentNews();
+        fetchNews();
     }
 
-    private void fetchGovernmentNews() {
+    private void fetchNews() {
         Call<PostsResponse> call = apiInterface.getCategoryById(categoryIdString);
 
         call.enqueue(new Callback<PostsResponse>() {
@@ -56,5 +61,12 @@ public class SingleCategory extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        finish();
+        startActivity(intent);
     }
 }
