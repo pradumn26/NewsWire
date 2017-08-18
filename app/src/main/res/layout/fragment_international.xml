@@ -12,6 +12,8 @@
 
     </ImageSwitcher>
     <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/international_list">

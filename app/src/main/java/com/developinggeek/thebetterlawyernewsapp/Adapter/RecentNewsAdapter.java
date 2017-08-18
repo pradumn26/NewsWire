@@ -97,7 +97,7 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return posts.size()+1;
+        return posts.size();
     }
 
     @Override

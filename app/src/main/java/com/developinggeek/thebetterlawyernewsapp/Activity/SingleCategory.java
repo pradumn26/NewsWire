@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionInflater;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
+import com.developinggeek.thebetterlawyernewsapp.Adapter.SearchNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
 import com.developinggeek.thebetterlawyernewsapp.Model.PostsResponse;
 import com.developinggeek.thebetterlawyernewsapp.R;
@@ -53,7 +54,7 @@ public class SingleCategory extends AppCompatActivity {
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 List<Posts> posts = response.body().getPosts();
 
-                mRecyclerView.setAdapter(new RecentNewsAdapter(posts, SingleCategory.this));
+                mRecyclerView.setAdapter(new SearchNewsAdapter(posts, SingleCategory.this));
             }
 
             @Override

@@ -5,16 +5,17 @@
     tools:context="com.developinggeek.thebetterlawyernewsapp.Fragments.GovernmentNewsFragment">
 
     <ImageSwitcher
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/imageSwitcher3"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </ImageSwitcher>
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/government_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/government_list">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"></android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
