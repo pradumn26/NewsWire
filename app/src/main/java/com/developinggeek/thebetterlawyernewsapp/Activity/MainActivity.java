@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity
 
         switch(id)
         {
-            case R.id.app_bar_setting : startActivity(new Intent(MainActivity.this , SettingsActivity.class));
+            case R.id.app_bar_setting :
 
         }
 
