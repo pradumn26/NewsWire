@@ -56,11 +56,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_app_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v4.view.ViewPager>
