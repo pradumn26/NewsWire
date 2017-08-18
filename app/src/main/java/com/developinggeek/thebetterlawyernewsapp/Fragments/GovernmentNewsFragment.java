@@ -48,7 +48,6 @@ public class GovernmentNewsFragment extends Fragment {
 
     List<Posts> imageSwitcherImages=new ArrayList<>();
     List<Bitmap> bitmapArrayList=new ArrayList<>();
-
     public GovernmentNewsFragment() {}
 
     @Override
