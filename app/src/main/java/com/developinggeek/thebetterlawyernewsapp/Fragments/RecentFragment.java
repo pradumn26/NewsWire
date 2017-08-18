@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,7 @@ public class RecentFragment extends Fragment
 {
 
     private ApiInterface apiInterface;
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView ;
 
     List<Posts> imageSwitcherImages=new ArrayList<>();
 
@@ -111,7 +110,7 @@ public class RecentFragment extends Fragment
                if(imageSwitcherImages.size()>0) {
                    final ImageView imageView=(ImageView) imageSwitcher.getCurrentView();
                    if(imageSwitcherImages.size()==bitmapArrayList.size()){
-                       Log.i("size3","true");
+
                        imageView.setImageBitmap(bitmapArrayList.get(animationCounter[0]));
                    }else {
 
@@ -142,8 +141,6 @@ public class RecentFragment extends Fragment
                     animationCounter[0]=animationCounter[0]+1;
                     animationCounter[0] %= imageSwitcherImages.size();
                 }
-                Log.i("size",bitmapArrayList.size()+"");
-                Log.i("size1",imageSwitcherImages.size()+"");
 
                 imageSwitcherHandler.postDelayed(this, 6000);
             }
@@ -173,6 +170,7 @@ public class RecentFragment extends Fragment
                 imageSwitcherImages=posts;
 
                 mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+
             }
 
             @Override

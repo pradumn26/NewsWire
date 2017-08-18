@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "585440024162",
+    "firebase_url": "https://thebetterlawyernewsapp.firebaseio.com",
+    "project_id": "thebetterlawyernewsapp",
+    "storage_bucket": "thebetterlawyernewsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585440024162:android:3d277a2ee74066cf",
+        "android_client_info": {
+          "package_name": "com.developinggeek.thebetterlawyernewsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585440024162-g7qhp69elhftkjb4p74j66031stv4es5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.developinggeek.thebetterlawyernewsapp",
+            "certificate_hash": "6089fcdec386fd399db10dfa2ae61edf3c4bce8f"
+          }
+        },
+        {
+          "client_id": "585440024162-1ap82no0rk5qhcfecf2quqlg3nff7sdk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzr_u5Gzfah_DlwjFGMC-j3VvvxXDPYmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585440024162-1ap82no0rk5qhcfecf2quqlg3nff7sdk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/app_bar_search"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/search_icon"
-        app:showAsAction="always"
-        android:title="Search" />
+        android:title="Search"
+        app:showAsAction="always" />
 
-    <item android:title="Categories"
-          android:id="@+id/categories" />
+    <item
+        android:id="@+id/app_bar_setting"
+        android:title="login"
+        app:showAsAction="always"
+        android:icon="@drawable/settings_icon"
+        />
 
 </menu>

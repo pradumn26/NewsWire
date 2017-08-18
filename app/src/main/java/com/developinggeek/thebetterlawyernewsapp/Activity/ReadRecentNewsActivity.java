@@ -1,7 +1,19 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.app.Fragment;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +22,19 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Html;
 import android.transition.TransitionInflater;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.CategoriesRecyclerViewAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Adapter.ReadNewsAuthorListViewAdapter;
@@ -31,7 +47,11 @@ import com.thefinestartist.finestwebview.FinestWebView;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReadRecentNewsActivity extends AppCompatActivity {
 
@@ -44,6 +64,9 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     RecyclerView categoryRecyclerView;
     CategoriesRecyclerViewAdapter categoriesRecyclerViewAdapter;
     ArrayList<Categories> categories;
+    Button btn_share ;
+    ImageButton btn_share_whatsapp , btn_share_insta;
+    View mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +84,10 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         storyTextView = (HtmlTextView) findViewById(R.id.read_news_activity_content_textview);
         categories= (ArrayList<Categories>) getIntent().getSerializableExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST);
         categoryRecyclerView= (RecyclerView) findViewById(R.id.category_recyclerView_in_readRecentNews_activity);
+        btn_share = (Button)findViewById(R.id.read_btn_share);
+        btn_share_whatsapp = (ImageButton)findViewById(R.id.read_btn_share_whatsapp);
+        mView = findViewById(R.id.read_news_parent);
+        btn_share_insta = (ImageButton)findViewById(R.id.read_btn_share_insta);
 
         authorListView = (ListView) findViewById(R.id.read_news_activity_author_listview);
         AuthorLink authorLink = new AuthorLink();
@@ -83,5 +110,86 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         categoryRecyclerView.setLayoutManager(new GridLayoutManager(ReadRecentNewsActivity.this,2));
         categoriesRecyclerViewAdapter= new CategoriesRecyclerViewAdapter(ReadRecentNewsActivity.this,categories);
         categoryRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
+
+        final String title = getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE).toString();
+
+        btn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+
+
+            }
+        });
+
+        btn_share_whatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Uri bmpUri = getLocalBitmapUri(photoImageView);
+
+                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType("image/*");
+                whatsappIntent.setPackage("com.whatsapp");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, title);
+                whatsappIntent.putExtra(Intent.EXTRA_STREAM , bmpUri);
+                startActivity(whatsappIntent);
+
+                try {
+                    startActivity(whatsappIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"));
+                    startActivity(browserIntent);
+                }
+            }
+        });
+
+        btn_share_insta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri bmpUri = getLocalBitmapUri(photoImageView);
+
+                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType("image/*");
+                whatsappIntent.setPackage("com.instagram.android");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, title);
+                whatsappIntent.putExtra(Intent.EXTRA_STREAM , bmpUri);
+
+                try {
+                   startActivity(whatsappIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=Instagram&hl=en"));
+                    startActivity(browserIntent);
+                }
+            }
+        });
+
     }
+
+    private Uri getLocalBitmapUri(ImageView photoImageView)
+    {
+        Drawable drawable = photoImageView.getDrawable();
+        Bitmap bmp = null;
+        if (drawable instanceof BitmapDrawable){
+            bmp = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+        } else {
+            return null;
+        }
+        // Store image to default external storage directory
+        Uri bmpUri = null;
+        try {
+
+            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
+    }
+
+
 }
