@@ -1,6 +1,7 @@
 package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -42,7 +43,8 @@ public class RecentFragment extends Fragment
 {
 
     private ApiInterface apiInterface;
-    private RecyclerView mRecyclerView ;
+    private RecyclerView mRecyclerView;
+    private ProgressDialog mProgress;
 
     List<Posts> imageSwitcherImages=new ArrayList<>();
 
@@ -65,6 +67,11 @@ public class RecentFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
+        mProgress = new ProgressDialog(getContext());
+        mProgress.setTitle("Loading...");
+        mProgress.setCanceledOnTouchOutside(false);
+        mProgress.show();
+
         fetchRecentNews();
 
         final Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fade_in);
@@ -75,7 +82,8 @@ public class RecentFragment extends Fragment
         final ImageSwitcher imageSwitcher = (ImageSwitcher)view.findViewById(R.id.imageSwitcher3);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
-            public View makeView() {
+            public View makeView()
+            {
                 ImageView imageView=new ImageView(getActivity().getApplicationContext());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
@@ -171,6 +179,7 @@ public class RecentFragment extends Fragment
 
                 mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
 
+                mProgress.dismiss();
             }
 
             @Override

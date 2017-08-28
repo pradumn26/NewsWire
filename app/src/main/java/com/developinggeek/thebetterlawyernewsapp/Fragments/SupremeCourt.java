@@ -1,6 +1,7 @@
 package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -43,13 +44,12 @@ public class SupremeCourt extends Fragment {
 
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
+    private ProgressDialog mProgress;
 
     List<Posts> imageSwitcherImages=new ArrayList<>();
     List<Bitmap> bitmapArrayList=new ArrayList<>();
 
-    public SupremeCourt() {
-
-    }
+    public SupremeCourt() {}
 
 
     @Override
@@ -63,6 +63,11 @@ public class SupremeCourt extends Fragment {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.SupremeCourtList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
+
+        mProgress = new ProgressDialog(getContext());
+        mProgress.setTitle("Loading...");
+        mProgress.setCanceledOnTouchOutside(false);
+        mProgress.show();
 
         fetchGovernmentNews();
 
@@ -162,6 +167,8 @@ public class SupremeCourt extends Fragment {
                 imageSwitcherImages=posts;
 
                 mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+
+                mProgress.dismiss();
             }
 
             @Override

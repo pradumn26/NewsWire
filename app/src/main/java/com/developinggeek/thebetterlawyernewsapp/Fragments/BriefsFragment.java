@@ -1,6 +1,7 @@
 package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ public class BriefsFragment extends Fragment
 {
 
     private ApiInterface apiInterface;
+    private ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
 
     public BriefsFragment() {}
@@ -46,6 +48,11 @@ public class BriefsFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
+        mProgress = new ProgressDialog(getContext());
+        mProgress.setTitle("Loading...");
+        mProgress.setCanceledOnTouchOutside(false);
+        mProgress.show();
+
         fetchNewNews();
 
         return view;
@@ -62,6 +69,8 @@ public class BriefsFragment extends Fragment
                 List<Posts> posts = response.body().getPosts();
 
                 mRecyclerView.setAdapter(new BriefNewsAdapter(posts , getContext()));
+
+                mProgress.dismiss();
             }
 
             @Override
