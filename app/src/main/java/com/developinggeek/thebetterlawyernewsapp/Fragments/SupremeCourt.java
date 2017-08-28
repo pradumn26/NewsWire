@@ -43,7 +43,9 @@ public class SupremeCourt extends Fragment {
 
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
+    private RecentNewsAdapter mAdapter;
 
+    List<Posts> posts;
     List<Posts> imageSwitcherImages=new ArrayList<>();
     List<Bitmap> bitmapArrayList=new ArrayList<>();
 
@@ -158,10 +160,20 @@ public class SupremeCourt extends Fragment {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
-                List<Posts> posts = response.body().getPosts();
+                posts = response.body().getPosts();
                 imageSwitcherImages=posts;
-
-                mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+                for (Posts post : posts)
+                    post.setShowShimmer(true);
+                mAdapter = new RecentNewsAdapter(posts, getContext());
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Posts post : posts)
+                            post.setShowShimmer(false);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, 3000);
             }
 
             @Override

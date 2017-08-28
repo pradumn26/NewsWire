@@ -42,28 +42,29 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class GovernmentNewsFragment extends Fragment {
-
+    private List<Posts> posts;
+    private RecentNewsAdapter mAdapter;
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
 
-    List<Posts> imageSwitcherImages=new ArrayList<>();
-    List<Bitmap> bitmapArrayList=new ArrayList<>();
-    public GovernmentNewsFragment() {}
+    List<Posts> imageSwitcherImages = new ArrayList<>();
+    List<Bitmap> bitmapArrayList = new ArrayList<>();
+
+    public GovernmentNewsFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_government_news, container, false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.government_list);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.government_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
         fetchGovernmentNews();
-
 
 
         final Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fade_in);
@@ -71,13 +72,13 @@ public class GovernmentNewsFragment extends Fragment {
         final Animation zoomin = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.zoomin);
         final Animation zoomout = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.zoomout);
 
-        final ImageSwitcher imageSwitcher = (ImageSwitcher)view.findViewById(R.id.imageSwitcher3);
+        final ImageSwitcher imageSwitcher = (ImageSwitcher) view.findViewById(R.id.imageSwitcher3);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-                ImageView imageView=new ImageView(getActivity().getApplicationContext());
+                ImageView imageView = new ImageView(getActivity().getApplicationContext());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 return imageView;
             }
         });
@@ -100,18 +101,18 @@ public class GovernmentNewsFragment extends Fragment {
 
 
         final int[] animationCounter = {0};
-        int i=0;
+        int i = 0;
         final Handler imageSwitcherHandler;
         imageSwitcherHandler = new Handler(Looper.getMainLooper());
         imageSwitcherHandler.post(new Runnable() {
             @Override
             public void run() {
-                if(imageSwitcherImages.size()>0) {
-                    final ImageView imageView=(ImageView) imageSwitcher.getCurrentView();
-                    if(imageSwitcherImages.size()==bitmapArrayList.size()){
-                        Log.i("size3","true");
+                if (imageSwitcherImages.size() > 0) {
+                    final ImageView imageView = (ImageView) imageSwitcher.getCurrentView();
+                    if (imageSwitcherImages.size() == bitmapArrayList.size()) {
+                        Log.i("size3", "true");
                         imageView.setImageBitmap(bitmapArrayList.get(animationCounter[0]));
-                    }else {
+                    } else {
 
                         Picasso.with(getContext()).load(imageSwitcherImages.get(animationCounter[0]).getThumbnail()).into(new Target() {
                             @Override
@@ -137,11 +138,11 @@ public class GovernmentNewsFragment extends Fragment {
                     imageView.startAnimation(zoomout);
 
                     imageView.startAnimation(set);
-                    animationCounter[0]=animationCounter[0]+1;
+                    animationCounter[0] = animationCounter[0] + 1;
                     animationCounter[0] %= imageSwitcherImages.size();
                 }
-                Log.i("size",bitmapArrayList.size()+"");
-                Log.i("size1",imageSwitcherImages.size()+"");
+                Log.i("size", bitmapArrayList.size() + "");
+                Log.i("size1", imageSwitcherImages.size() + "");
 
                 imageSwitcherHandler.postDelayed(this, 6000);
             }
@@ -150,18 +151,26 @@ public class GovernmentNewsFragment extends Fragment {
         return view;
     }
 
-    private void fetchGovernmentNews()
-    {
+    private void fetchGovernmentNews() {
         Call<PostsResponse> call = apiInterface.getCategoryById("2868+807");
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
-            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
-            {
-                List<Posts> posts = response.body().getPosts();
-                imageSwitcherImages=posts;
-
-                mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
+                posts = response.body().getPosts();
+                imageSwitcherImages = posts;
+                for (Posts post : posts)
+                    post.setShowShimmer(true);
+                mAdapter = new RecentNewsAdapter(posts , getContext());
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Posts post : posts)
+                            post.setShowShimmer(false);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, 3000);
             }
 
             @Override

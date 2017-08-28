@@ -38,15 +38,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecentFragment extends Fragment
-{
-
+public class RecentFragment extends Fragment {
+    private List<Posts> posts;
+    private RecentNewsAdapter mAdapter;
     private ApiInterface apiInterface;
-    private RecyclerView mRecyclerView ;
+    private RecyclerView mRecyclerView;
 
-    List<Posts> imageSwitcherImages=new ArrayList<>();
+    List<Posts> imageSwitcherImages = new ArrayList<>();
 
-    List<Bitmap> bitmapArrayList=new ArrayList<>();
+    List<Bitmap> bitmapArrayList = new ArrayList<>();
+
     public RecentFragment() {
         // Required empty public constructor
     }
@@ -54,14 +55,13 @@ public class RecentFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent, container, false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         bitmapArrayList.clear();
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recent_news_list);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recent_news_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
@@ -72,21 +72,21 @@ public class RecentFragment extends Fragment
         final Animation zoomin = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.zoomin);
         final Animation zoomout = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.zoomout);
 
-        final ImageSwitcher imageSwitcher = (ImageSwitcher)view.findViewById(R.id.imageSwitcher3);
+        final ImageSwitcher imageSwitcher = (ImageSwitcher) view.findViewById(R.id.imageSwitcher3);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-                ImageView imageView=new ImageView(getActivity().getApplicationContext());
+                ImageView imageView = new ImageView(getActivity().getApplicationContext());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 return imageView;
             }
         });
         imageSwitcher.setInAnimation(animationFadeIn);
         imageSwitcher.setOutAnimation(animationFadeOut);
 
-       // DisplayMetrics displayMetrics = new DisplayMetrics();
-       // getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // DisplayMetrics displayMetrics = new DisplayMetrics();
+        // getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         //float width=displayMetrics.widthPixels;
         final AnimationSet set = new AnimationSet(true);
         Animation trAnimation = new TranslateAnimation(0, 20, 0, 300);
@@ -101,44 +101,44 @@ public class RecentFragment extends Fragment
 
 
         final int[] animationCounter = {0};
-        int i=0;
+        int i = 0;
         final Handler imageSwitcherHandler;
         imageSwitcherHandler = new Handler(Looper.getMainLooper());
         imageSwitcherHandler.post(new Runnable() {
             @Override
             public void run() {
-               if(imageSwitcherImages.size()>0) {
-                   final ImageView imageView=(ImageView) imageSwitcher.getCurrentView();
-                   if(imageSwitcherImages.size()==bitmapArrayList.size()){
+                if (imageSwitcherImages.size() > 0) {
+                    final ImageView imageView = (ImageView) imageSwitcher.getCurrentView();
+                    if (imageSwitcherImages.size() == bitmapArrayList.size()) {
 
-                       imageView.setImageBitmap(bitmapArrayList.get(animationCounter[0]));
-                   }else {
+                        imageView.setImageBitmap(bitmapArrayList.get(animationCounter[0]));
+                    } else {
 
-                       Picasso.with(getContext()).load(imageSwitcherImages.get(animationCounter[0]).getThumbnail()).into(new Target() {
-                           @Override
-                           public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                               imageView.setImageBitmap(bitmap);
-                               bitmapArrayList.add(bitmap);
-                           }
+                        Picasso.with(getContext()).load(imageSwitcherImages.get(animationCounter[0]).getThumbnail()).into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                imageView.setImageBitmap(bitmap);
+                                bitmapArrayList.add(bitmap);
+                            }
 
-                           @Override
-                           public void onBitmapFailed(Drawable errorDrawable) {
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
 
-                           }
+                            }
 
-                           @Override
-                           public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                           }
-                       });
-                   }
+                            }
+                        });
+                    }
 
 
                     //imageView.startAnimation(zoomin);
-                   imageView.startAnimation(zoomout);
+                    imageView.startAnimation(zoomout);
 
-                   imageView.startAnimation(set);
-                    animationCounter[0]=animationCounter[0]+1;
+                    imageView.startAnimation(set);
+                    animationCounter[0] = animationCounter[0] + 1;
                     animationCounter[0] %= imageSwitcherImages.size();
                 }
 
@@ -156,20 +156,28 @@ public class RecentFragment extends Fragment
         super.onCreate(savedInstanceState);
     }
 
-    private void fetchRecentNews()
-    {
+    private void fetchRecentNews() {
 
         Call<PostsResponse> call = apiInterface.getRecentPosts();
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
-            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
-            {
+            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
 
-                List<Posts> posts = response.body().getPosts();
-                imageSwitcherImages=posts;
-
-                mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+                posts = response.body().getPosts();
+                imageSwitcherImages = posts;
+                for (Posts post : posts)
+                    post.setShowShimmer(true);
+                mAdapter = new RecentNewsAdapter(posts, getContext());
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Posts post : posts)
+                            post.setShowShimmer(false);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, 3000);
 
             }
 

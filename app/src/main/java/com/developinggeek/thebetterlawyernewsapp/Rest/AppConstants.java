@@ -13,6 +13,8 @@ public class AppConstants {
     public static final String READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL = "readRecentNewsActivityAuthorUrl";
     public static final String READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST = "readRecentNewsActivityCategoryList";
     public static final String SINGLE_CATEGORY_ID_STRING = "singleCategoryIdString";
-    public static  int width = 0;
+    public static final int IMAGE_SIZE_MEDIUM_LARGE = 111;
+    public static final int IMAGE_SIZE_LARGE = 110;
+    public static int width = 0;
 
 }

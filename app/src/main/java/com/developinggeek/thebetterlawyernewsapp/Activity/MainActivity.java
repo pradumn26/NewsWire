@@ -19,11 +19,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.transition.Explode;
 import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,28 +35,35 @@ import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
 import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
+import com.developinggeek.thebetterlawyernewsapp.Rest.ExceptionHandler;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.onesignal.OSNotification;
+import com.onesignal.OSNotificationOpenResult;
+import com.onesignal.OneSignal;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-
     private ActionBar actionBar;
     private Toolbar mToolbar;
     private ViewPager mPager;
     private MainPageAdapter mPageAdapter;
     private TabLayout mTabLayout;
     private MaterialSearchView searchView;
+    private ImageView logoImageView;
     private ApiInterface apiInterface;
-    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private ImageView logoImageView;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21)
-            getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
-
+        OneSignal.startInit(this).setNotificationOpenedHandler(new ExampleNotificationOpenedHandler()).init();
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        if(Build.VERSION.SDK_INT >= 21)
+            getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition                                     .shared_news_photo_transition));
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.drawer_layout_in_main_activity);
 
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -91,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 logoImageView.setVisibility(View.VISIBLE);
             }
         });
-
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -149,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startActivityById(String id) {
-        Intent intent= new Intent(MainActivity.this,SingleCategory.class);
-        intent.putExtra(AppConstants.SINGLE_CATEGORY_ID_STRING,id);
+        Intent intent = new Intent(MainActivity.this, SingleCategory.class);
+        intent.putExtra(AppConstants.SINGLE_CATEGORY_ID_STRING, id);
         startActivity(intent);
     }
 
@@ -181,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -203,5 +211,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public class ExampleNotificationOpenedHandler implements OneSignal.NotificationOpenedHandler {
+
+        @Override
+        public void notificationOpened(OSNotificationOpenResult result) {
+            Toast.makeText(MainActivity.this, "notification recieved", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

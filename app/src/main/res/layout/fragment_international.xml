@@ -5,24 +5,23 @@
     tools:context="com.developinggeek.thebetterlawyernewsapp.Fragments.InternationalFragment">
 
     <ImageSwitcher
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/imageSwitcher3"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </ImageSwitcher>
 
     <View
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@drawable/scrim_down"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/scrim_down" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/international_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:id="@+id/international_list">
-    </android.support.v7.widget.RecyclerView>
+        android:transitionGroup="true" />
 
 </FrameLayout>

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout_in_mainActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:transitionGroup="true">
 
     <include layout="@layout/activity_main" />
 
@@ -12,7 +13,7 @@
         android:id="@+id/navigationView_in_mainActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:headerLayout="@layout/header_layout_in_main_activity"
         android:layout_gravity="start"
-        app:menu="@menu/navigation_menu"/>
+        app:headerLayout="@layout/header_layout_in_main_activity"
+        app:menu="@menu/navigation_menu" />
 </android.support.v4.widget.DrawerLayout>
