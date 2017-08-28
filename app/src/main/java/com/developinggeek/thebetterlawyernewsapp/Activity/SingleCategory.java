@@ -1,5 +1,6 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SingleCategory extends AppCompatActivity {
+    ProgressDialog progressDialog;
     List<Posts> posts;
     private SearchNewsAdapter mAdapter;
     private String categoryIdString;
@@ -47,6 +49,11 @@ public class SingleCategory extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(SingleCategory.this));
         mRecyclerView.setHasFixedSize(true);
 
+        progressDialog = new ProgressDialog(SingleCategory.this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
         fetchNews();
     }
 
@@ -56,6 +63,7 @@ public class SingleCategory extends AppCompatActivity {
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
+                progressDialog.cancel();
                 posts = response.body().getPosts();
 
                 for (Posts post : posts)
@@ -74,7 +82,7 @@ public class SingleCategory extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
-
+                progressDialog.cancel();
             }
         });
     }

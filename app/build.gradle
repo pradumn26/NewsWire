@@ -4,6 +4,9 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
+        manifestPlaceholders = [onesignal_app_id               : "6fdd8501-9d8b-47bd-a822-84a3fc66975d",
+                                // Project number pulled from dashboard, local value is ignored.
+                                onesignal_google_project_number: "585440024162"]
         applicationId "com.developinggeek.thebetterlawyernewsapp"
         minSdkVersion 17
         targetSdkVersion 26
@@ -40,9 +43,25 @@ dependencies {
     compile 'org.sufficientlysecure:html-textview:3.4'
     compile 'com.thefinestartist:finestwebview:1.2.7'
     compile 'com.github.jgabrielfreitas:BlurImageView:1.0.1'
-    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.firebase:firebase-auth:11.2.0'
+    compile 'info.hoang8f:fbutton:1.0.5'
+    compile 'com.github.jd-alexander:LikeButton:0.2.1'
+    compile 'com.onesignal:OneSignal:[3.6.0, 3.99.99]'
+    compile 'com.google.firebase:firebase-database:11.2.0'
+    compile 'com.google.firebase:firebase-storage:11.2.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
+    compile 'com.google.android.gms:play-services:11.2.0'
+    compile 'com.google.android.gms:play-services-ads:11.2.0'
+    compile 'com.google.android.gms:play-services-identity:11.2.0'
+    compile 'com.google.android.gms:play-services-gcm:11.2.0'
+    compile 'com.google.android.gms:play-services-analytics:11.2.0'
+    compile 'com.google.android.gms:play-services-location:11.2.0'
+    compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
     testCompile 'junit:junit:4.12'
 }
+
+
 
 
 

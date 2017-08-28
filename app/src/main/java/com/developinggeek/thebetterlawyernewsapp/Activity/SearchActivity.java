@@ -1,5 +1,6 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
+    ProgressDialog progressDialog;
     List<Posts> posts;
     private SearchNewsAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -52,6 +54,13 @@ public class SearchActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.search_news_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
+
+        progressDialog = new ProgressDialog(SearchActivity.this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        fetchSearchNews();
     }
 
     private void fetchSearchNews() {
@@ -60,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
-
+                progressDialog.cancel();
                 posts = response.body().getPosts();
                 for (Posts post : posts)
                     post.setShowShimmer(true);
@@ -80,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
-
+                progressDialog.cancel();
             }
         });
     }

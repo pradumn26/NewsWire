@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -28,6 +29,7 @@ import com.developinggeek.thebetterlawyernewsapp.Activity.ReadRecentNewsActivity
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
 import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -96,31 +98,38 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         } else {
             ViewHolder1 viewHolder2 = (ViewHolder1) holder;
-            viewHolder2.title.setText(posts.get(position).getTitle());
-            viewHolder2.brief.setText(posts.get(position).getExcerpt());
-            final String imgUrl = posts.get(position).getThumbnail();
-            Picasso.with(mContext).load(imgUrl).into(viewHolder2.img);
-            final View sharedView = viewHolder2.img;
+            if(posts.get(position).isShowShimmer())
+                viewHolder2.shimmerFrameLayout.startShimmerAnimation();
+            else {
+                viewHolder2.shimmerFrameLayout.stopShimmerAnimation();
+                viewHolder2.title.setText(posts.get(position).getTitle());
+                viewHolder2.title.setBackground(null);
+                viewHolder2.linearLayout1.setVisibility(View.GONE);
+                viewHolder2.linearLayout2.setVisibility(View.GONE);
+                final String imgUrl = posts.get(position).getThumbnail();
+                Picasso.with(mContext).load(imgUrl).into(viewHolder2.img);
+                final View sharedView = viewHolder2.img;
 
-            viewHolder2.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, ReadRecentNewsActivity.class);
-                    intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO, imgUrl);
-                    intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE, posts.get(position).getTitle());
-                    intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT, posts.get(position).getContent());
-                    intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_NAME, posts.get(position).getAuthor().getName());
-                    intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTVITY_AUTHOR_DESCRIPTION, posts.get(position).getAuthor().getDesp());
-                    intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL, posts.get(position).getAuthor().getUrl());
+                viewHolder2.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, ReadRecentNewsActivity.class);
+                        intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO, imgUrl);
+                        intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE, posts.get(position).getTitle());
+                        intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT, posts.get(position).getContent());
+                        intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_NAME, posts.get(position).getAuthor().getName());
+                        intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTVITY_AUTHOR_DESCRIPTION, posts.get(position).getAuthor().getDesp());
+                        intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL, posts.get(position).getAuthor().getUrl());
 
-                    Bundle b = new Bundle();
-                    b.putSerializable(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST, posts.get(position).getCategories());
-                    intent.putExtras(b);
+                        Bundle b = new Bundle();
+                        b.putSerializable(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST, posts.get(position).getCategories());
+                        intent.putExtras(b);
 
-                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
-                    mContext.startActivity(intent, activityOptionsCompat.toBundle());
-                }
-            });
+                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
+                        mContext.startActivity(intent, activityOptionsCompat.toBundle());
+                    }
+                });
+            }
         }
 
     }
@@ -149,15 +158,18 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     class ViewHolder1 extends RecyclerView.ViewHolder {
 
+        ShimmerFrameLayout shimmerFrameLayout;
         View view;
         ImageView img;
-        TextView title, brief;
-
+        TextView title;
+        LinearLayout linearLayout1 , linearLayout2;
 
         public ViewHolder1(View itemView) {
             super(itemView);
+            linearLayout1 = (LinearLayout) itemView.findViewById(R.id.linear_layout_under_textview);
+            linearLayout2 = (LinearLayout) itemView.findViewById(R.id.linear_layout_under_textview_2);
+            shimmerFrameLayout = (ShimmerFrameLayout) itemView.findViewById(R.id.shimmerView_in_recentAdapter);
             title = (TextView) itemView.findViewById(R.id.recent_news_title);
-            brief = (TextView) itemView.findViewById(R.id.recent_news_brief);
             img = (ImageView) itemView.findViewById(R.id.recent_news_image);
             view = itemView.findViewById(R.id.recent_list_container);
 

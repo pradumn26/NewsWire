@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "585440024162-1vcma9b8th431ur2b1nivgrufgink8ht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.developinggeek.thebetterlawyernewsapp",
+            "certificate_hash": "bda9d97f67593752bc8ce2e844617b588d3b5bc8"
+          }
+        },
+        {
           "client_id": "585440024162-36pnk88mn2jq7fuskck2qfe7ntojn69r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

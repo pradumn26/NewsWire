@@ -66,6 +66,7 @@ public class BriefsFragment extends Fragment
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
+                mProgress.cancel();
                 List<Posts> posts = response.body().getPosts();
 
                 mRecyclerView.setAdapter(new BriefNewsAdapter(posts , getContext()));
@@ -75,7 +76,7 @@ public class BriefsFragment extends Fragment
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
-
+                mProgress.cancel();
             }
         });
     }

@@ -55,7 +55,6 @@ import java.util.List;
 
 public class ReadRecentNewsActivity extends AppCompatActivity {
 
-    CardView cardView;
     ImageView photoImageView;
     TextView headlineTextView;
     HtmlTextView storyTextView;
@@ -78,7 +77,6 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_read_recent_news);
 
-        cardView = (CardView) findViewById(R.id.read_news_activity_image_cardview);
         photoImageView = (ImageView) findViewById(R.id.read_news_activity_image_view);
         headlineTextView = (TextView) findViewById(R.id.read_news_activity_headline_textview);
         storyTextView = (HtmlTextView) findViewById(R.id.read_news_activity_content_textview);

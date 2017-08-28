@@ -43,6 +43,9 @@
             android:name=".Activity.SingleCategory"
             android:launchMode="singleTask" />
         <activity android:name=".Activity.LoginActivity"></activity>
+        <activity android:name=".Activity.SettingsActivity"></activity>
+        <activity android:name=".Activity.RegisterActivity"></activity>
+        <activity android:name=".Activity.SplashScreenActivity"></activity>
     </application>
 
 </manifest>

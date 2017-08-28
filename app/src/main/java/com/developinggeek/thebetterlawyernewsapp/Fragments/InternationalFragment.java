@@ -1,6 +1,7 @@
 package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -42,10 +43,11 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class InternationalFragment extends Fragment {
-
+    ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
-
+    private List<Posts> posts;
+    private RecentNewsAdapter mAdapter;
     List<Posts> imageSwitcherImages=new ArrayList<>();
     List<Bitmap> bitmapArrayList=new ArrayList<>();
 
@@ -64,6 +66,11 @@ public class InternationalFragment extends Fragment {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.international_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
 
         fetchInternationalNews();
 
@@ -159,15 +166,26 @@ public class InternationalFragment extends Fragment {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
-                List<Posts> posts = response.body().getPosts();
+                progressDialog.cancel();
+                posts = response.body().getPosts();
                 imageSwitcherImages=posts;
-
-                mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+                for(Posts post: posts)
+                    post.setShowShimmer(true);
+                mAdapter = new RecentNewsAdapter(posts , getContext());
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(Posts post: posts)
+                            post.setShowShimmer(false);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                },3000);
             }
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
-
+                progressDialog.cancel();
             }
         });
     }
