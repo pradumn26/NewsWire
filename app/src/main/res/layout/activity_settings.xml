@@ -91,7 +91,7 @@
                     android:textColor="#FFF"
                     android:textSize="17sp" />
 
-                <Button
+                <info.hoang8f.widget.FButton
                     android:id="@+id/settings_btn_login"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"

@@ -135,13 +135,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
+        <info.hoang8f.widget.FButton
             android:id="@+id/register_btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Account"
             android:textSize="18sp"
             android:background="@color/colorAccent"
+            android:backgroundTint="@color/colorAccent"
             android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>

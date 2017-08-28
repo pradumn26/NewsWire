@@ -37,7 +37,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="enter email"
+            android:hint="Enter Email"
             android:textColor="#000"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -51,33 +51,34 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="enter password"
+            android:hint="Enter Password"
             android:textColor="#000"
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <info.hoang8f.widget.FButton
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/login_btn_register"
+        android:id="@+id/login_btn_login"
         android:background="@drawable/elliptical"
         android:backgroundTint="@color/colorAccent"
-        android:text="Need another Account"
+        android:text="LOGIN"
         />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/login_btn_login"
+        <info.hoang8f.widget.FButton
+            android:id="@+id/login_btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="NEED ANOTHER ACCOUNT"
             android:textSize="18sp"
             android:background="@color/colorAccent"
+            android:backgroundTint="@color/colorAccent"
             android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
