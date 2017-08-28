@@ -119,6 +119,12 @@
                 android:text="log out"
                 android:textColor="#000"
                 android:id="@+id/setting_btn_signout"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite"
+                android:textColor="#000"
+                android:id="@+id/favoritebutton"/>
 
         </LinearLayout>
 

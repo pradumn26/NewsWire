@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -25,6 +26,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.transition.TransitionInflater;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -42,15 +45,28 @@ import com.developinggeek.thebetterlawyernewsapp.Model.AuthorLink;
 import com.developinggeek.thebetterlawyernewsapp.Model.Categories;
 import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.thefinestartist.finestwebview.FinestWebView;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ReadRecentNewsActivity extends AppCompatActivity {
@@ -66,6 +82,10 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     Button btn_share ;
     ImageButton btn_share_whatsapp , btn_share_insta;
     View mView;
+
+    DatabaseReference mRootRef;
+    FirebaseAuth mAuth;
+    LikeButton likeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -95,6 +115,86 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         authorLinkArrayList.add(authorLink);
         readNewsAuthorListViewAdapter = new ReadNewsAuthorListViewAdapter(this, authorLinkArrayList);
         authorListView.setAdapter(readNewsAuthorListViewAdapter);
+
+        mAuth=FirebaseAuth.getInstance();
+        mRootRef= FirebaseDatabase.getInstance().getReference().child("Favorite");
+        Log.i("appid1",getIntent().getStringExtra(AppConstants.APP_ID));
+        if(mAuth.getCurrentUser()!=null)
+        {
+            String uid=mAuth.getCurrentUser().getUid();
+            mRootRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild(getIntent().getStringExtra(AppConstants.APP_ID)))
+                    {
+                        likeButton.setLiked(true);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        likeButton=(LikeButton) findViewById(R.id.star_button);
+        likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+
+                if(mAuth.getCurrentUser()==null)
+                {
+                    Toast.makeText(ReadRecentNewsActivity.this, "You Need To Sign In", Toast.LENGTH_SHORT).show();
+                    likeButton.setLiked(false);
+                }
+                else
+                {
+                    final String uid=mAuth.getCurrentUser().getUid();
+
+                    final HashMap<String,String> hashMap=new HashMap<String, String>();
+                    hashMap.put("Headline",getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
+                    hashMap.put("Content",getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT));
+                    hashMap.put("Liked","true");
+                    Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+                            byte [] b=baos.toByteArray();
+                            String temp= Base64.encodeToString(b, Base64.DEFAULT);
+                            hashMap.put("Bitmap",temp);
+                            mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    mRootRef.keepSynced(true);
+
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                String uid=mAuth.getCurrentUser().getUid();
+                mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).removeValue();
+
+            }
+        });
 
         Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(photoImageView);
         headlineTextView.setText(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));

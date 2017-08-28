@@ -54,6 +54,14 @@ public class SettingsActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Account Settings");
 
+        Button favoriteButton=(Button) findViewById(R.id.favoritebutton);
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SettingsActivity.this,FavoriteActivity.class));
+            }
+        });
+
         if(mAuth.getCurrentUser() == null)
         {
             online.setVisibility(View.GONE);

@@ -13,6 +13,7 @@ public class AppConstants {
     public static final String READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL = "readRecentNewsActivityAuthorUrl";
     public static final String READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST = "readRecentNewsActivityCategoryList";
     public static final String SINGLE_CATEGORY_ID_STRING = "singleCategoryIdString";
+    public  static final String APP_ID="appId";
     public static  int width = 0;
 
 }

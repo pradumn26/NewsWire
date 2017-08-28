@@ -120,6 +120,8 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_NAME, posts.get(position).getAuthor().getName());
                         intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTVITY_AUTHOR_DESCRIPTION, posts.get(position).getAuthor().getDesp());
                         intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL, posts.get(position).getAuthor().getUrl());
+                        intent.putExtra(AppConstants.APP_ID,posts.get(position).getId()+"");
+                        Log.i("appid",posts.get(position).getId()+" ");
 
                         Bundle b = new Bundle();
                         b.putSerializable(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST, posts.get(position).getCategories());
