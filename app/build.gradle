@@ -46,6 +46,8 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:10.0.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:support-vector-drawable:26.+'
+    compile 'com.github.jd-alexander:LikeButton:0.2.1'
+    compile 'info.hoang8f:fbutton:1.0.5'
     testCompile 'junit:junit:4.12'
 }
 
