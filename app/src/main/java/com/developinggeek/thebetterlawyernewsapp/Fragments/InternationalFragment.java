@@ -1,6 +1,7 @@
 package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import retrofit2.Response;
 public class InternationalFragment extends Fragment {
 
     private ApiInterface apiInterface;
+    private ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
 
     List<Posts> imageSwitcherImages=new ArrayList<>();
@@ -64,6 +66,11 @@ public class InternationalFragment extends Fragment {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.international_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
+
+        mProgress = new ProgressDialog(getContext());
+        mProgress.setTitle("Loading...");
+        mProgress.setCanceledOnTouchOutside(false);
+        mProgress.show();
 
         fetchInternationalNews();
 
@@ -163,6 +170,8 @@ public class InternationalFragment extends Fragment {
                 imageSwitcherImages=posts;
 
                 mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
+
+                mProgress.dismiss();
             }
 
             @Override
