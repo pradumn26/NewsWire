@@ -10,7 +10,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -42,22 +41,8 @@ dependencies {
     compile 'com.thefinestartist:finestwebview:1.2.7'
     compile 'com.github.jgabrielfreitas:BlurImageView:1.0.1'
     compile 'com.google.firebase:firebase-auth:10.0.1'
-    compile 'com.google.firebase:firebase-database:10.0.1'
-    compile 'com.google.firebase:firebase-storage:10.0.1'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.android.support:support-vector-drawable:26.+'
-    compile 'com.github.jd-alexander:LikeButton:0.2.1'
-    compile 'info.hoang8f:fbutton:1.0.5'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-
-
-
-
-
 
 
 

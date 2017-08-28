@@ -1,47 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recent_list_container"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:id="@+id/recent_list_container"
     android:layout_marginBottom="10dp"
-    >
+    android:transitionGroup="true">
 
-    <LinearLayout
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerView_in_recentAdapter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            android:src="@drawable/default_thumb"
-            android:scaleType="centerCrop"
-            android:id="@+id/recent_news_image"
-            android:transitionName="newsPhotoTransitionFromMainActivityToReadNewsActivity"
-            />
-
-        <TextView
-            android:padding="10dp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:fontFamily="serif"
-            android:textStyle="bold"
-            android:id="@+id/recent_news_title"
-            android:text="Govt Cannot Track Citizens Using Aadhaar Data As It Is Technically Impossible: UIDAI"
-            />
+            android:orientation="horizontal"
+            android:transitionGroup="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="On August 1, the agency that handles the biometric information told a nine-judge bench of the Supreme Court that the government cannot track or spy on citizens using Aadhaar data as it is technically impossible. Aadhaar naysayers argue that its mandatory all-pervasive nature would make India a totalitarian state as it would give the government"
-            android:maxLines="3"
-            android:id="@+id/recent_news_brief"
-            android:visibility="gone"
-            />
+            <ImageView
+                android:id="@+id/recent_news_image"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:background="@color/colorAccent"
+                android:scaleType="centerCrop"
+                android:transitionGroup="true"
+                android:transitionName="newsPhotoTransitionFromMainActivityToReadNewsActivity" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/recent_news_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shimmer_background"
+                    android:fontFamily="serif"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_under_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="23sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/colorAccent"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_under_textview_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="23sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/colorAccent"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </android.support.v7.widget.CardView>

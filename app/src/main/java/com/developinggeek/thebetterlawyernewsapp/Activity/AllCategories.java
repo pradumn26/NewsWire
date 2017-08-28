@@ -13,6 +13,7 @@ import android.widget.ViewSwitcher;
 import com.developinggeek.thebetterlawyernewsapp.Adapter.CategoriesAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Category;
 import com.developinggeek.thebetterlawyernewsapp.R;
+import com.developinggeek.thebetterlawyernewsapp.Rest.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class AllCategories extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_all_categories);
         initData();
         mTitle = (TextSwitcher) findViewById(R.id.title);

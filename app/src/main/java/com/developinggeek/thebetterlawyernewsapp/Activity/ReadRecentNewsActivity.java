@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -26,7 +25,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.transition.TransitionInflater;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -44,14 +42,6 @@ import com.developinggeek.thebetterlawyernewsapp.Model.AuthorLink;
 import com.developinggeek.thebetterlawyernewsapp.Model.Categories;
 import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 import com.thefinestartist.finestwebview.FinestWebView;
 
@@ -61,7 +51,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ReadRecentNewsActivity extends AppCompatActivity {
@@ -78,13 +67,6 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     Button btn_share ;
     ImageButton btn_share_whatsapp , btn_share_insta;
     View mView;
-
-
-    DatabaseReference mRootRef;
-    private FirebaseAuth mAuth;
-    LikeButton likeButton;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,37 +88,6 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         btn_share_whatsapp = (ImageButton)findViewById(R.id.read_btn_share_whatsapp);
         mView = findViewById(R.id.read_news_parent);
         btn_share_insta = (ImageButton)findViewById(R.id.read_btn_share_insta);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        //String uid = currentUser.getUid();
-        mRootRef= FirebaseDatabase.getInstance().getReference().child("Favorite");
-        likeButton=(LikeButton) findViewById(R.id.star_button);
-        likeButton.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                Log.i("liked","true");
-                HashMap<String,String> userMap = new HashMap<>();
-                String id=getIntent().getStringExtra(AppConstants.ID_OF_NEWS);
-                Log.i("newsid1",id);
-                userMap.put("News_id",id);
-                userMap.put("headline",getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
-                mRootRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        Log.i("liked","true1");
-                    }
-                });
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-
-            }
-        });
-
 
         authorListView = (ListView) findViewById(R.id.read_news_activity_author_listview);
         AuthorLink authorLink = new AuthorLink();

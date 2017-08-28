@@ -10,6 +10,11 @@ import java.util.ArrayList;
 
 public class Posts
 {
+    private boolean showShimmer;
+
+    @SerializedName("thumbnail_images")
+    private Thumbnails thumbnails;
+
     @SerializedName("categories")
     private ArrayList<Categories> categories;
 
@@ -194,5 +199,21 @@ public class Posts
 
     public void setCategories(ArrayList<Categories> categories) {
         this.categories = categories;
+    }
+
+    public Thumbnails getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(Thumbnails thumbnails) {
+        this.thumbnails = thumbnails;
+    }
+
+    public boolean isShowShimmer() {
+        return showShimmer;
+    }
+
+    public void setShowShimmer(boolean showShimmer) {
+        this.showShimmer = showShimmer;
     }
 }

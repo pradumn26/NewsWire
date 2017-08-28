@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:transitionGroup="true"
     tools:context="com.developinggeek.thebetterlawyernewsapp.Activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -26,22 +27,21 @@
                 android:id="@+id/main_search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/logoImageView"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/logo"
-                    android:visibility="visible" />
+                    <ImageView
+                        android:id="@+id/logoImageView"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/logo"
+                        android:visibility="visible" />
 
-            </RelativeLayout>
+                </RelativeLayout>
 
             </com.miguelcatalan.materialsearchview.MaterialSearchView>
 
@@ -61,9 +61,11 @@
 
 
     <android.support.v4.view.ViewPager
+
         android:id="@+id/main_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionGroup="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v4.view.ViewPager>

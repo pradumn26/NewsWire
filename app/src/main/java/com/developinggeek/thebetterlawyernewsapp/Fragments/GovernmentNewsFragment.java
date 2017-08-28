@@ -1,7 +1,6 @@
 package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -46,7 +45,6 @@ public class GovernmentNewsFragment extends Fragment {
 
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
-    private ProgressDialog mProgress;
 
     List<Posts> imageSwitcherImages=new ArrayList<>();
     List<Bitmap> bitmapArrayList=new ArrayList<>();
@@ -64,12 +62,9 @@ public class GovernmentNewsFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
-        mProgress = new ProgressDialog(getContext());
-        mProgress.setTitle("Loading...");
-        mProgress.setCanceledOnTouchOutside(false);
-        mProgress.show();
-
         fetchGovernmentNews();
+
+
 
         final Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fade_in);
         final Animation animationFadeOut = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fade_out);
@@ -167,8 +162,6 @@ public class GovernmentNewsFragment extends Fragment {
                 imageSwitcherImages=posts;
 
                 mRecyclerView.setAdapter(new RecentNewsAdapter(posts , getContext()));
-
-                mProgress.dismiss();
             }
 
             @Override

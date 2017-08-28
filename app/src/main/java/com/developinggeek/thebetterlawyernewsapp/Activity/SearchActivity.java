@@ -14,6 +14,7 @@ import com.developinggeek.thebetterlawyernewsapp.Model.PostsResponse;
 import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
+import com.developinggeek.thebetterlawyernewsapp.Rest.ExceptionHandler;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
 
+    List<Posts> posts;
     private SearchNewsAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private String category;
@@ -30,43 +32,47 @@ public class SearchActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (Build.VERSION.SDK_INT >= 21)
             getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
         setContentView(R.layout.activity_search);
 
         category = getIntent().getStringExtra("category");
 
-        mToolbar = (Toolbar)findViewById(R.id.search_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(category);
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.search_news_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.search_news_list);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.search_news_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.search_news_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
-
-        fetchSearchNews();
-
     }
 
-    private void fetchSearchNews()
-    {
+    private void fetchSearchNews() {
         Call<PostsResponse> call = apiInterface.getSearchResults(category);
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
-            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
-            {
+            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
 
-                List<Posts> posts = response.body().getPosts();
-
-                mAdapter = new SearchNewsAdapter(posts , SearchActivity.this);
+                posts = response.body().getPosts();
+                for (Posts post : posts)
+                    post.setShowShimmer(true);
+                mAdapter = new SearchNewsAdapter(posts, SearchActivity.this);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Posts post : posts)
+                            post.setShowShimmer(false);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, 3000);
 
                 mRecyclerView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
@@ -77,8 +83,5 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
-
 }

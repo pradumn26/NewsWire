@@ -16,6 +16,7 @@ import com.developinggeek.thebetterlawyernewsapp.R;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient;
 import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
 import com.developinggeek.thebetterlawyernewsapp.Rest.AppConstants;
+import com.developinggeek.thebetterlawyernewsapp.Rest.ExceptionHandler;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SingleCategory extends AppCompatActivity {
+    List<Posts> posts;
+    private SearchNewsAdapter mAdapter;
     private String categoryIdString;
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
@@ -31,11 +34,12 @@ public class SingleCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (Build.VERSION.SDK_INT >= 21)
             getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
         setContentView(R.layout.activity_single_category);
 
-        categoryIdString= getIntent().getStringExtra(AppConstants.SINGLE_CATEGORY_ID_STRING);
+        categoryIdString = getIntent().getStringExtra(AppConstants.SINGLE_CATEGORY_ID_STRING);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -52,9 +56,20 @@ public class SingleCategory extends AppCompatActivity {
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
-                List<Posts> posts = response.body().getPosts();
+                posts = response.body().getPosts();
 
-                mRecyclerView.setAdapter(new SearchNewsAdapter(posts, SingleCategory.this));
+                for (Posts post : posts)
+                    post.setShowShimmer(true);
+                mAdapter = new SearchNewsAdapter(posts, SingleCategory.this);
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (Posts post : posts)
+                            post.setShowShimmer(false);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, 3000);
             }
 
             @Override
