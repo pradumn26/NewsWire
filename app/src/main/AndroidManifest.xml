@@ -45,6 +45,7 @@
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.SettingsActivity" />
+        <activity android:name=".Activity.SplashScreenActivity"></activity>
     </application>
 
 </manifest>
