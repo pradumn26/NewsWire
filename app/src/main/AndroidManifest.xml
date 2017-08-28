@@ -44,7 +44,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.RegisterActivity" />
-        <activity android:name=".Activity.SettingsActivity"></activity>
+        <activity android:name=".Activity.SettingsActivity" />
     </application>
 
 </manifest>

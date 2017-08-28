@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.developinggeek.thebetterlawyernewsapp.R;
@@ -27,12 +30,16 @@ import java.util.HashMap;
 public class RegisterActivity extends AppCompatActivity
 {
 
-    private TextInputLayout edt_email , edt_pass ,edt_name;
+    private TextInputLayout edt_email , edt_pass ,edt_name ,edt_phone , edt_city , edt_confirm;
     private Button btn_reg;
     private ProgressDialog regProgress;
     private FirebaseAuth mAuth;
     private Toolbar mToolbar;
     private DatabaseReference mUsersDatabase;
+    private Spinner mSpinner;
+    private ArrayAdapter<CharSequence> profession_list;
+    private String prof;
+    private boolean profSelect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,12 +49,35 @@ public class RegisterActivity extends AppCompatActivity
 
         mToolbar = (Toolbar)findViewById(R.id.register_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Create Account");
+        getSupportActionBar().setTitle("Create New Account");
 
         edt_email = (TextInputLayout)findViewById(R.id.register_email);
         edt_pass = (TextInputLayout)findViewById(R.id.register_password);
         btn_reg = (Button)findViewById(R.id.register_btn_register);
         edt_name = (TextInputLayout)findViewById(R.id.register_name);
+        edt_phone = (TextInputLayout)findViewById(R.id.register_number);
+        edt_city = (TextInputLayout)findViewById(R.id.register_city);
+        edt_confirm = (TextInputLayout)findViewById(R.id.register_confirm_pass);
+        mSpinner = (Spinner)findViewById(R.id.register_spinner);
+
+        profession_list = ArrayAdapter.createFromResource(this , R.array.profession_names , R.layout.spinner_item);
+        profession_list.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mSpinner.setAdapter(profession_list);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                profSelect = true;
+                prof = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(RegisterActivity.this, prof + "is selected", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+
+        });
 
         regProgress = new ProgressDialog(this);
 
@@ -62,14 +92,27 @@ public class RegisterActivity extends AppCompatActivity
                 String name = edt_name.getEditText().getText().toString();
                 String email = edt_email.getEditText().getText().toString();
                 String password = edt_pass.getEditText().getText().toString();
+                String confirmPass = edt_confirm.getEditText().getText().toString();
+                String city = edt_city.getEditText().getText().toString();
+                String phone = edt_phone.getEditText().getText().toString();
 
-                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
+                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)
+                        &&!TextUtils.isEmpty(confirmPass) && !TextUtils.isEmpty(city) &&!TextUtils.isEmpty(phone)
+                        &&profSelect )
                 {
-                    regProgress.setTitle("Registering User");
-                    regProgress.setMessage("Please wait while your account is created");
-                    regProgress.setCanceledOnTouchOutside(false);
-                    regProgress.show();
-                    register_user(name ,email ,password);
+                    if(password.equals(confirmPass))
+                    {
+                        regProgress.setTitle("Registering User");
+                        regProgress.setMessage("Please wait while your account is created");
+                        regProgress.setCanceledOnTouchOutside(false);
+                        regProgress.show();
+                        register_user(name ,email ,password ,city ,phone ,prof);
+                    }
+                    else
+                    {
+                        Toast.makeText(RegisterActivity.this, "Confirm Password doesnot matches with the above password", Toast.LENGTH_LONG).show();
+                    }
+
                 }
                 else
                 {
@@ -79,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity
         });
     }
 
-    private void register_user(final String name, String email, String password)
+    private void register_user(final String name, final String email, String password , final String city , final String phone , final String prof)
     {
         mAuth.createUserWithEmailAndPassword(email ,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -96,6 +139,10 @@ public class RegisterActivity extends AppCompatActivity
                   HashMap<String,String> userMap = new HashMap<>();
                   userMap.put("name",name);
                   userMap.put("image","default");
+                  userMap.put("phone_number",phone);
+                  userMap.put("city" , city);
+                  userMap.put("profession" , prof);
+                  userMap.put("email" , email);
                   userMap.put("device_token",tokenId);
 
                   mUsersDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {

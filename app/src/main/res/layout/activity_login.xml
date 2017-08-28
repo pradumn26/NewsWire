@@ -15,8 +15,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:src="@mipmap/logo" />
 
@@ -60,7 +59,8 @@
     <Button
         android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/login_btn_register"
         android:background="@drawable/elliptical"
         android:backgroundTint="@color/colorAccent"
