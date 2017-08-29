@@ -48,11 +48,6 @@ public class BriefsFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
-        mProgress = new ProgressDialog(getContext());
-        mProgress.setTitle("Loading...");
-        mProgress.setCanceledOnTouchOutside(false);
-        mProgress.show();
-
         fetchNewNews();
 
         return view;
@@ -66,12 +61,10 @@ public class BriefsFragment extends Fragment
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
-                mProgress.cancel();
                 List<Posts> posts = response.body().getPosts();
 
                 mRecyclerView.setAdapter(new BriefNewsAdapter(posts , getContext()));
 
-                mProgress.dismiss();
             }
 
             @Override

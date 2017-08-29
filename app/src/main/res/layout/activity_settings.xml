@@ -11,7 +11,7 @@
         android:id="@+id/settings_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimaryDark" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -20,47 +20,45 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/setting_online_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                >
+                android:background="@color/colorPrimary">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/settings_user_img"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/settings_user_img"
                     android:src="@drawable/default_user_img" />
 
                 <TextView
+                    android:id="@+id/setting_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="#FFF"
-                    android:text="User name"
-                    android:id="@+id/setting_user_name"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     android:layout_alignTop="@+id/settings_user_img"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="9dp"
                     android:layout_toEndOf="@+id/settings_user_img"
-                    android:layout_marginStart="9dp" />
+                    android:text="User name"
+                    android:textColor="#FFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/setting_user_profession"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:layout_alignBottom="@+id/settings_user_img"
+                    android:layout_alignStart="@+id/setting_user_name"
                     android:text="User Profession"
                     android:textColor="#FFF"
-                    android:id="@+id/setting_user_profession"
-                    android:layout_alignBottom="@+id/settings_user_img"
-                    android:layout_alignStart="@+id/setting_user_name" />
+                    android:textSize="20dp" />
 
             </RelativeLayout>
 
@@ -105,26 +103,248 @@
 
             </LinearLayout>
 
-            <Switch
-                android:layout_marginLeft="20dp"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="#eae7e7"
+                    android:gravity="center_vertical"
+                    android:text="   PERSONALIZE"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:id="@+id/setting_dp_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginLeft="30dp"
+                        android:src="@drawable/photo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Display Picture"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cardview_dark_background" />
+
+                <LinearLayout
+                    android:id="@+id/setting_favourite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginLeft="30dp"
+                        android:src="@drawable/favorite" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Favorites"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cardview_dark_background" />
+
+                <LinearLayout
+                    android:id="@+id/setting_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_marginLeft="30dp"
+                        android:src="@drawable/logout" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Logout"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/cardview_dark_background" />
+
+            <LinearLayout
+                android:id="@+id/setting_notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="18sp"
-                android:text="Enable Notifications"/>
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/notifications" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Notifications"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="#eae7e7"
+                android:gravity="center_vertical"
+                android:text="   INFORMATION"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/setting_about_us"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="log out"
-                android:textColor="#000"
-                android:id="@+id/setting_btn_signout"/>
-            <Button
-                android:layout_width="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/info" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="About Us"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cardview_dark_background" />
+
+            <LinearLayout
+                android:id="@+id/setting_contact"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Favorite"
-                android:textColor="#000"
-                android:id="@+id/favoritebutton"/>
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/contact" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Contact Us"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="#eae7e7"
+                android:gravity="center_vertical"
+                android:text="   Support Us"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/setting_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/share" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Share App"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cardview_dark_background" />
+
+
+            <LinearLayout
+                android:id="@+id/setting_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/rate" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Rate Us on Playstore"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

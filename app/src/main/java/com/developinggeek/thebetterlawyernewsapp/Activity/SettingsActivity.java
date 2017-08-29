@@ -28,11 +28,12 @@ public class SettingsActivity extends AppCompatActivity
     private RelativeLayout online;
     private LinearLayout offline;
     private Toolbar mToolbar;
-    private Button btnLogin , btnLogout;
+    private Button btnLogin;
     private CircleImageView userImg;
     private TextView userName , userProf;
     private FirebaseAuth mAuth;
     private DatabaseReference mUsersDatabse;
+    private LinearLayout logout , favorite , dpChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,15 +48,16 @@ public class SettingsActivity extends AppCompatActivity
         userImg = (CircleImageView)findViewById(R.id.settings_user_img);
         userName = (TextView)findViewById(R.id.setting_user_name);
         userProf = (TextView)findViewById(R.id.setting_user_profession);
-        btnLogout = (Button)findViewById(R.id.setting_btn_signout);
+        dpChange = (LinearLayout)findViewById(R.id.setting_dp_change);
+        logout = (LinearLayout)findViewById(R.id.setting_logout);
+        favorite = (LinearLayout)findViewById(R.id.setting_favourite);
 
         mAuth = FirebaseAuth.getInstance();
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Account Settings");
+        getSupportActionBar().setTitle("User Settings");
 
-        Button favoriteButton=(Button) findViewById(R.id.favoritebutton);
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
+        favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SettingsActivity.this,FavoriteActivity.class));
@@ -65,7 +67,9 @@ public class SettingsActivity extends AppCompatActivity
         if(mAuth.getCurrentUser() == null)
         {
             online.setVisibility(View.GONE);
-            btnLogout.setVisibility(View.GONE);
+            logout.setVisibility(View.GONE);
+            favorite.setVisibility(View.GONE);
+            dpChange.setVisibility(View.GONE);
 
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,14 +105,14 @@ public class SettingsActivity extends AppCompatActivity
                }
            });
 
-            btnLogout.setOnClickListener(new View.OnClickListener()
-            {
+            logout.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
+                public void onClick(View view) {
                     FirebaseAuth.getInstance().signOut();
 
-                    startActivity(new Intent(SettingsActivity.this , SettingsActivity.class));
+                    Intent newIntent = new Intent(SettingsActivity.this , SettingsActivity.class);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(newIntent);
                 }
             });
 

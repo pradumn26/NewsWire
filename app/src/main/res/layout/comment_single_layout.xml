@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:id="@+id/comment_single_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/default_user_img" />
+
+        <TextView
+            android:id="@+id/comment_single_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="User Name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_above="@+id/comment_single_comment"
+            android:layout_toEndOf="@+id/comment_single_img" />
+
+        <TextView
+            android:id="@+id/comment_single_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/comment_single_img"
+            android:layout_below="@+id/comment_single_img"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="User comments goes here"
+            android:textSize="18sp"
+            />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
