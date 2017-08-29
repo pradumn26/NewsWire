@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +16,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.developinggeek.thebetterlawyernewsapp.Model.PostRequest;
+import com.developinggeek.thebetterlawyernewsapp.Model.Post_Response;
 import com.developinggeek.thebetterlawyernewsapp.R;
+import com.developinggeek.thebetterlawyernewsapp.Rest.ApiInterface;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +30,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient.Base_URL_POST;
 
 public class RegisterActivity extends AppCompatActivity
 {
@@ -40,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity
     private ArrayAdapter<CharSequence> profession_list;
     private String prof;
     private boolean profSelect = false;
+
+    ApiInterface service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,6 +73,13 @@ public class RegisterActivity extends AppCompatActivity
         edt_city = (TextInputLayout)findViewById(R.id.register_city);
         edt_confirm = (TextInputLayout)findViewById(R.id.register_confirm_pass);
         mSpinner = (Spinner)findViewById(R.id.register_spinner);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://apis.thebetterlawyer.com/TheBetterLawyer/rest/userProfile/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service=retrofit.create(ApiInterface.class);
 
         profession_list = ArrayAdapter.createFromResource(this , R.array.profession_names , R.layout.spinner_item);
         profession_list.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -122,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity
         });
     }
 
-    private void register_user(final String name, final String email, String password , final String city , final String phone , final String prof)
+    private void register_user(final String name, final String email, final String password , final String city , final String phone , final String prof)
     {
         mAuth.createUserWithEmailAndPassword(email ,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -160,6 +181,48 @@ public class RegisterActivity extends AppCompatActivity
 
                       }
                   });
+
+                  PostRequest postRequest=new PostRequest();
+
+
+                  postRequest.setCity(city);
+                  postRequest.setEmailId(email);
+                  postRequest.setMobileNumber(phone);
+                  postRequest.setUseName(name);
+                  postRequest.setPassword(password);
+                  postRequest.setVerified("true");
+                  postRequest.setType("save");
+                  postRequest.setProfileType("003");
+                  postRequest.setPublished("1");
+                  postRequest.setLoginType("self");
+                  Log.i("register","1");
+
+                  Call<Post_Response> post_responseCall=service.getPostResponse(postRequest);
+                  post_responseCall.enqueue(new Callback<Post_Response>() {
+                      @Override
+                      public void onResponse(Call<Post_Response> call, Response<Post_Response> response) {
+                          int statusCode=response.code();
+
+                          Post_Response post_response=response.body();
+                          Log.i("register",post_response.getMobileNumber());
+                          Log.i("register",post_response.getId());
+                          Log.i("register",post_response.getError());
+                          Log.i("register",post_response.getEmailId());
+
+                          Log.i("register","2");
+
+
+                          Log.i("code",statusCode+"");
+                      }
+
+                      @Override
+                      public void onFailure(Call<Post_Response> call, Throwable t) {
+                          Log.i("code1",t.getMessage());
+
+                      }
+                  });
+
+
               }
               else
               {
