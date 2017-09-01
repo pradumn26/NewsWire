@@ -184,6 +184,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
                         }
                     });
+                    mRootRef.keepSynced(true);
 
                 }
             }

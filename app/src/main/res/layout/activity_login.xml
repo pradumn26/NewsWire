@@ -67,6 +67,14 @@
         android:text="LOGIN"
         />
 
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="Forgot Your Password?" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

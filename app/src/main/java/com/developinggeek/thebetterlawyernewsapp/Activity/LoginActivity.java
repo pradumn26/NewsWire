@@ -7,8 +7,10 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.developinggeek.thebetterlawyernewsapp.R;
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUsersDatabase;
 
+    TextView forgotYourPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +40,22 @@ public class LoginActivity extends AppCompatActivity {
         edt_email = (TextInputLayout) findViewById(R.id.login_email);
         edt_pass = (TextInputLayout)findViewById(R.id.login_password);
 
+        forgotYourPassword=(TextView) findViewById(R.id.forgotPassword);
+
         mAuth = FirebaseAuth.getInstance();
 
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         mProgress = new ProgressDialog(LoginActivity.this);
+
+
+
+        forgotYourPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
+            }
+        });
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
