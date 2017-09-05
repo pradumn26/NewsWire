@@ -7,7 +7,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
@@ -43,14 +46,17 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class HighCourtFragment extends Fragment {
-
-    ProgressDialog progressDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private View fragmentView;
+    private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
     private List<Posts> posts;
     private RecentNewsAdapter mAdapter;
     List<Posts> imageSwitcherImages = new ArrayList<>();
     List<Bitmap> bitmapArrayList = new ArrayList<>();
+    private FloatingActionButton floatingActionButton;
+    private TextView retryTextView;
 
     public HighCourtFragment() {
 
@@ -63,6 +69,14 @@ public class HighCourtFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_high_court, container, false);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchGovernmentNews();
+            }
+        });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.HighCourtList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -71,6 +85,19 @@ public class HighCourtFragment extends Fragment {
         progressDialog.setTitle("Loading...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.retry_fab);
+        retryTextView = (TextView) view.findViewById(R.id.retry_textView);
+        fragmentView = view.findViewById(R.id.fragment_scrim);
+        floatingActionButton.setVisibility(View.GONE);
+        retryTextView.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retryTextView.setText("Retrying...");
+                fetchGovernmentNews();
+            }
+        });
 
         fetchGovernmentNews();
 
@@ -165,6 +192,9 @@ public class HighCourtFragment extends Fragment {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                floatingActionButton.setVisibility(View.GONE);
+                retryTextView.setVisibility(View.GONE);
+                fragmentView.setVisibility(View.VISIBLE);
                 posts = response.body().getPosts();
                 imageSwitcherImages = posts;
                 for (Posts post : posts)
@@ -184,6 +214,10 @@ public class HighCourtFragment extends Fragment {
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                floatingActionButton.setVisibility(View.VISIBLE);
+                retryTextView.setVisibility(View.VISIBLE);
+                fragmentView.setVisibility(View.GONE);
+                retryTextView.setText("Tap to retry");
             }
         });
     }

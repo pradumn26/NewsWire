@@ -79,8 +79,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     RecyclerView categoryRecyclerView;
     CategoriesRecyclerViewAdapter categoriesRecyclerViewAdapter;
     ArrayList<Categories> categories;
-    Button btn_share ;
-    ImageButton btn_share_whatsapp , btn_share_insta;
+    ImageButton btn_share_whatsapp, btn_share_insta;
     View mView;
 
     DatabaseReference mRootRef;
@@ -88,8 +87,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     LikeButton likeButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= 21)
@@ -100,12 +98,11 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         photoImageView = (ImageView) findViewById(R.id.read_news_activity_image_view);
         headlineTextView = (TextView) findViewById(R.id.read_news_activity_headline_textview);
         storyTextView = (HtmlTextView) findViewById(R.id.read_news_activity_content_textview);
-        categories= (ArrayList<Categories>) getIntent().getSerializableExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST);
-        categoryRecyclerView= (RecyclerView) findViewById(R.id.category_recyclerView_in_readRecentNews_activity);
-        btn_share = (Button)findViewById(R.id.read_btn_share);
-        btn_share_whatsapp = (ImageButton)findViewById(R.id.read_btn_share_whatsapp);
+        categories = (ArrayList<Categories>) getIntent().getSerializableExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST);
+        categoryRecyclerView = (RecyclerView) findViewById(R.id.category_recyclerView_in_readRecentNews_activity);
+        btn_share_whatsapp = (ImageButton) findViewById(R.id.read_btn_share_whatsapp);
         mView = findViewById(R.id.read_news_parent);
-        btn_share_insta = (ImageButton)findViewById(R.id.read_btn_share_insta);
+        btn_share_insta = (ImageButton) findViewById(R.id.read_btn_share_insta);
 
         authorListView = (ListView) findViewById(R.id.read_news_activity_author_listview);
         AuthorLink authorLink = new AuthorLink();
@@ -116,17 +113,14 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         readNewsAuthorListViewAdapter = new ReadNewsAuthorListViewAdapter(this, authorLinkArrayList);
         authorListView.setAdapter(readNewsAuthorListViewAdapter);
 
-        mAuth=FirebaseAuth.getInstance();
-        mRootRef= FirebaseDatabase.getInstance().getReference().child("Favorite");
-        Log.i("appid1",getIntent().getStringExtra(AppConstants.APP_ID));
-        if(mAuth.getCurrentUser()!=null)
-        {
-            String uid=mAuth.getCurrentUser().getUid();
+        mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance().getReference().child("Favorite");
+        if (mAuth.getCurrentUser() != null) {
+            String uid = mAuth.getCurrentUser().getUid();
             mRootRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChild(getIntent().getStringExtra(AppConstants.APP_ID)))
-                    {
+                    if (dataSnapshot.hasChild(getIntent().getStringExtra(AppConstants.APP_ID))) {
                         likeButton.setLiked(true);
                     }
                 }
@@ -138,32 +132,29 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
             });
         }
 
-        likeButton=(LikeButton) findViewById(R.id.star_button);
+        likeButton = (LikeButton) findViewById(R.id.star_button);
         likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
 
-                if(mAuth.getCurrentUser()==null)
-                {
+                if (mAuth.getCurrentUser() == null) {
                     Toast.makeText(ReadRecentNewsActivity.this, "You Need To Sign In", Toast.LENGTH_SHORT).show();
                     likeButton.setLiked(false);
-                }
-                else
-                {
-                    final String uid=mAuth.getCurrentUser().getUid();
+                } else {
+                    final String uid = mAuth.getCurrentUser().getUid();
 
-                    final HashMap<String,String> hashMap=new HashMap<String, String>();
-                    hashMap.put("Headline",getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
-                    hashMap.put("Content",getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT));
-                    hashMap.put("Liked","true");
+                    final HashMap<String, String> hashMap = new HashMap<String, String>();
+                    hashMap.put("Headline", getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
+                    hashMap.put("Content", getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT));
+                    hashMap.put("Liked", "true");
                     Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            ByteArrayOutputStream baos=new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-                            byte [] b=baos.toByteArray();
-                            String temp= Base64.encodeToString(b, Base64.DEFAULT);
-                            hashMap.put("Bitmap",temp);
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            byte[] b = baos.toByteArray();
+                            String temp = Base64.encodeToString(b, Base64.DEFAULT);
+                            hashMap.put("Bitmap", temp);
                             mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -190,13 +181,16 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
             @Override
             public void unLiked(LikeButton likeButton) {
-                String uid=mAuth.getCurrentUser().getUid();
+                String uid = mAuth.getCurrentUser().getUid();
                 mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).removeValue();
 
             }
         });
 
-        Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(photoImageView);
+        if (getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO) != null)
+            Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(photoImageView);
+        else
+            photoImageView.setImageResource(R.mipmap.image_not_available);
         headlineTextView.setText(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
         storyTextView.setHtml(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT));
         authorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -205,32 +199,22 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
                 new FinestWebView.Builder(ReadRecentNewsActivity.this).show(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL));
             }
         });
-        categoryRecyclerView.setLayoutManager(new GridLayoutManager(ReadRecentNewsActivity.this,2));
-        categoriesRecyclerViewAdapter= new CategoriesRecyclerViewAdapter(ReadRecentNewsActivity.this,categories);
+        categoryRecyclerView.setLayoutManager(new GridLayoutManager(ReadRecentNewsActivity.this, 2));
+        categoriesRecyclerViewAdapter = new CategoriesRecyclerViewAdapter(ReadRecentNewsActivity.this, categories);
         categoryRecyclerView.setAdapter(categoriesRecyclerViewAdapter);
 
         final String title = getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE).toString();
 
-        btn_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-
-
-            }
-        });
-
         btn_share_whatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Uri bmpUri = getLocalBitmapUri(photoImageView);
 
                 Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                 whatsappIntent.setType("image/*");
                 whatsappIntent.setPackage("com.whatsapp");
                 whatsappIntent.putExtra(Intent.EXTRA_TEXT, title);
-                whatsappIntent.putExtra(Intent.EXTRA_STREAM , bmpUri);
+                whatsappIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
                 startActivity(whatsappIntent);
 
                 try {
@@ -251,10 +235,10 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
                 whatsappIntent.setType("image/*");
                 whatsappIntent.setPackage("com.instagram.android");
                 whatsappIntent.putExtra(Intent.EXTRA_TEXT, title);
-                whatsappIntent.putExtra(Intent.EXTRA_STREAM , bmpUri);
+                whatsappIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
 
                 try {
-                   startActivity(whatsappIntent);
+                    startActivity(whatsappIntent);
                 } catch (android.content.ActivityNotFoundException ex) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/developer?id=Instagram&hl=en"));
                     startActivity(browserIntent);
@@ -264,11 +248,10 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
     }
 
-    private Uri getLocalBitmapUri(ImageView photoImageView)
-    {
+    private Uri getLocalBitmapUri(ImageView photoImageView) {
         Drawable drawable = photoImageView.getDrawable();
         Bitmap bmp = null;
-        if (drawable instanceof BitmapDrawable){
+        if (drawable instanceof BitmapDrawable) {
             bmp = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
         } else {
             return null;
@@ -277,7 +260,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         Uri bmpUri = null;
         try {
 
-            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
             FileOutputStream out = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.close();

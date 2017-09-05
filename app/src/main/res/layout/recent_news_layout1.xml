@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="270dp"
+    android:layout_height="170dp"
     android:orientation="vertical"
     android:visibility="visible">
 
@@ -9,7 +9,6 @@
         android:id="@+id/headline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
         android:fontFamily="serif"
         android:textColor="#fff"
         android:textColorHighlight="@android:color/primary_text_dark"
