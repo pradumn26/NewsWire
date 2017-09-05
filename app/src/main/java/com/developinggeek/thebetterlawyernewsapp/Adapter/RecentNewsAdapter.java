@@ -74,7 +74,6 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             viewHolder0.textView.setAnimation(animationToLeft);
 
 
-
             animationToLeft.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -98,7 +97,7 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         } else {
             ViewHolder1 viewHolder2 = (ViewHolder1) holder;
-            if(posts.get(position).isShowShimmer())
+            if (posts.get(position).isShowShimmer())
                 viewHolder2.shimmerFrameLayout.startShimmerAnimation();
             else {
                 viewHolder2.shimmerFrameLayout.stopShimmerAnimation();
@@ -107,7 +106,10 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 viewHolder2.linearLayout1.setVisibility(View.GONE);
                 viewHolder2.linearLayout2.setVisibility(View.GONE);
                 final String imgUrl = posts.get(position).getThumbnail();
-                Picasso.with(mContext).load(imgUrl).into(viewHolder2.img);
+                if (imgUrl != null)
+                    Picasso.with(mContext).load(imgUrl).into(viewHolder2.img);
+                else
+                    viewHolder2.img.setImageResource(R.mipmap.image_not_available);
                 final View sharedView = viewHolder2.img;
 
                 viewHolder2.view.setOnClickListener(new View.OnClickListener() {
@@ -120,14 +122,14 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_NAME, posts.get(position).getAuthor().getName());
                         intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTVITY_AUTHOR_DESCRIPTION, posts.get(position).getAuthor().getDesp());
                         intent.putExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL, posts.get(position).getAuthor().getUrl());
-                        intent.putExtra(AppConstants.APP_ID,posts.get(position).getId()+"");
-                        Log.i("appid",posts.get(position).getId()+" ");
+                        intent.putExtra(AppConstants.APP_ID, posts.get(position).getId() + "");
+                        Log.i("appid", posts.get(position).getId() + " ");
 
                         Bundle b = new Bundle();
                         b.putSerializable(AppConstants.READ_RECENT_NEWS_ACTIVITY_CATEGORY_LIST, posts.get(position).getCategories());
                         intent.putExtras(b);
 
-                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
+                        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity)                             mContext, sharedView, "newsPhotoTransitionFromMainActivityToReadNewsActivity");
                         mContext.startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 });
@@ -164,7 +166,7 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         View view;
         ImageView img;
         TextView title;
-        LinearLayout linearLayout1 , linearLayout2;
+        LinearLayout linearLayout1, linearLayout2;
 
         public ViewHolder1(View itemView) {
             super(itemView);

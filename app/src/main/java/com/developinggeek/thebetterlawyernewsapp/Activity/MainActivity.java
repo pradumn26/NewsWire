@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         OneSignal.startInit(this).setNotificationOpenedHandler(new ExampleNotificationOpenedHandler()).init();
 //        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if(Build.VERSION.SDK_INT >= 21)
-            getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition                                     .shared_news_photo_transition));
+            getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition                                   .shared_news_photo_transition));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.drawer_layout_in_main_activity);
 
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView = (NavigationView) findViewById(R.id.navigationView_in_mainActivity);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout_in_mainActivity);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, mToolbar, R.string.navigation_drawer_open, R.string           .navigation_drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -186,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             alert.show();
-
         }
     }
 

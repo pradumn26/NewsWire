@@ -3,11 +3,15 @@ package com.developinggeek.thebetterlawyernewsapp.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Adapter.SearchNewsAdapter;
@@ -26,12 +30,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SingleCategory extends AppCompatActivity {
-    ProgressDialog progressDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog progressDialog;
     List<Posts> posts;
     private SearchNewsAdapter mAdapter;
     private String categoryIdString;
     private ApiInterface apiInterface;
     private RecyclerView mRecyclerView;
+    private FloatingActionButton floatingActionButton;
+    private TextView retryTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,14 @@ public class SingleCategory extends AppCompatActivity {
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchNews();
+            }
+        });
+
         mRecyclerView = (RecyclerView) findViewById(R.id.singleCategoryRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(SingleCategory.this));
         mRecyclerView.setHasFixedSize(true);
@@ -53,6 +68,18 @@ public class SingleCategory extends AppCompatActivity {
         progressDialog.setTitle("Loading...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.retry_fab);
+        retryTextView = (TextView) findViewById(R.id.retry_textView);
+        floatingActionButton.setVisibility(View.GONE);
+        retryTextView.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retryTextView.setText("Retrying...");
+                fetchNews();
+            }
+        });
 
         fetchNews();
     }
@@ -64,6 +91,8 @@ public class SingleCategory extends AppCompatActivity {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                floatingActionButton.setVisibility(View.GONE);
+                retryTextView.setVisibility(View.GONE);
                 posts = response.body().getPosts();
 
                 for (Posts post : posts)
@@ -83,6 +112,9 @@ public class SingleCategory extends AppCompatActivity {
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                floatingActionButton.setVisibility(View.VISIBLE);
+                retryTextView.setVisibility(View.VISIBLE);
+                retryTextView.setText("Tap to retry");
             }
         });
     }

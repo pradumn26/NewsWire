@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.RecentNewsAdapter;
@@ -39,31 +42,40 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecentFragment extends Fragment
-{
-    ProgressDialog progressDialog;
+public class RecentFragment extends Fragment {
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private View fragmentScrim;
+    private FloatingActionButton floatingActionButton;
+    private TextView retryTextView;
+    private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
-    private RecyclerView mRecyclerView ;
+    private RecyclerView mRecyclerView;
     private List<Posts> posts;
     private RecentNewsAdapter mAdapter;
-    List<Posts> imageSwitcherImages=new ArrayList<>();
+    List<Posts> imageSwitcherImages = new ArrayList<>();
+    List<Bitmap> bitmapArrayList = new ArrayList<>();
 
-    List<Bitmap> bitmapArrayList=new ArrayList<>();
     public RecentFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent, container, false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         bitmapArrayList.clear();
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recent_news_list);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchRecentNews();
+            }
+        });
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recent_news_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
@@ -72,6 +84,19 @@ public class RecentFragment extends Fragment
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.retry_fab);
+        retryTextView = (TextView) view.findViewById(R.id.retry_textView);
+        fragmentScrim = view.findViewById(R.id.fragment_scrim);
+        floatingActionButton.setVisibility(View.GONE);
+        retryTextView.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retryTextView.setText("Retrying...");
+                fetchRecentNews();
+            }
+        });
+
         fetchRecentNews();
 
         final Animation animationFadeIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fade_in);
@@ -79,21 +104,21 @@ public class RecentFragment extends Fragment
         final Animation zoomin = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.zoomin);
         final Animation zoomout = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.zoomout);
 
-        final ImageSwitcher imageSwitcher = (ImageSwitcher)view.findViewById(R.id.imageSwitcher3);
+        final ImageSwitcher imageSwitcher = (ImageSwitcher) view.findViewById(R.id.imageSwitcher3);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-                ImageView imageView=new ImageView(getActivity().getApplicationContext());
+                ImageView imageView = new ImageView(getActivity().getApplicationContext());
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setLayoutParams(new ImageSwitcher.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams              .MATCH_PARENT));
                 return imageView;
             }
         });
         imageSwitcher.setInAnimation(animationFadeIn);
         imageSwitcher.setOutAnimation(animationFadeOut);
 
-       // DisplayMetrics displayMetrics = new DisplayMetrics();
-       // getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // DisplayMetrics displayMetrics = new DisplayMetrics();
+        // getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         //float width=displayMetrics.widthPixels;
         final AnimationSet set = new AnimationSet(true);
         Animation trAnimation = new TranslateAnimation(0, 20, 0, 300);
@@ -108,44 +133,44 @@ public class RecentFragment extends Fragment
 
 
         final int[] animationCounter = {0};
-        int i=0;
+        int i = 0;
         final Handler imageSwitcherHandler;
         imageSwitcherHandler = new Handler(Looper.getMainLooper());
         imageSwitcherHandler.post(new Runnable() {
             @Override
             public void run() {
-               if(imageSwitcherImages.size()>0) {
-                   final ImageView imageView=(ImageView) imageSwitcher.getCurrentView();
-                   if(imageSwitcherImages.size()==bitmapArrayList.size()){
+                if (imageSwitcherImages.size() > 0) {
+                    final ImageView imageView = (ImageView) imageSwitcher.getCurrentView();
+                    if (imageSwitcherImages.size() == bitmapArrayList.size()) {
 
-                       imageView.setImageBitmap(bitmapArrayList.get(animationCounter[0]));
-                   }else {
+                        imageView.setImageBitmap(bitmapArrayList.get(animationCounter[0]));
+                    } else {
 
-                       Picasso.with(getContext()).load(imageSwitcherImages.get(animationCounter[0]).getThumbnail()).into(new Target() {
-                           @Override
-                           public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                               imageView.setImageBitmap(bitmap);
-                               bitmapArrayList.add(bitmap);
-                           }
+                        Picasso.with(getContext()).load(imageSwitcherImages.get(animationCounter[0]).getThumbnail()).into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                imageView.setImageBitmap(bitmap);
+                                bitmapArrayList.add(bitmap);
+                            }
 
-                           @Override
-                           public void onBitmapFailed(Drawable errorDrawable) {
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
 
-                           }
+                            }
 
-                           @Override
-                           public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-                           }
-                       });
-                   }
+                            }
+                        });
+                    }
 
 
                     //imageView.startAnimation(zoomin);
-                   imageView.startAnimation(zoomout);
+                    imageView.startAnimation(zoomout);
 
-                   imageView.startAnimation(set);
-                    animationCounter[0]=animationCounter[0]+1;
+                    imageView.startAnimation(set);
+                    animationCounter[0] = animationCounter[0] + 1;
                     animationCounter[0] %= imageSwitcherImages.size();
                 }
 
@@ -157,44 +182,42 @@ public class RecentFragment extends Fragment
 
     }
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    private void fetchRecentNews()
-    {
+    private void fetchRecentNews() {
 
         Call<PostsResponse> call = apiInterface.getRecentPosts();
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
-            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
-            {
+            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                floatingActionButton.setVisibility(View.GONE);
+                retryTextView.setVisibility(View.GONE);
+                fragmentScrim.setVisibility(View.VISIBLE);
                 posts = response.body().getPosts();
-                imageSwitcherImages=posts;
-                for(Posts post: posts)
+                imageSwitcherImages = posts;
+                for (Posts post : posts)
                     post.setShowShimmer(true);
-                mAdapter = new RecentNewsAdapter(posts , getContext());
+                mAdapter = new RecentNewsAdapter(posts, getContext());
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        for(Posts post: posts)
+                        for (Posts post : posts)
                             post.setShowShimmer(false);
                         mAdapter.notifyDataSetChanged();
                     }
-                },3000);
+                }, 3000);
             }
 
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                floatingActionButton.setVisibility(View.VISIBLE);
+                retryTextView.setVisibility(View.VISIBLE);
+                fragmentScrim.setVisibility(View.GONE);
+                retryTextView.setText("Tap to Retry");
             }
         });
 
     }
-
 }
