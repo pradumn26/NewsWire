@@ -1,6 +1,9 @@
 package com.developinggeek.thebetterlawyernewsapp.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,16 +14,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.developinggeek.thebetterlawyernewsapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class SettingsActivity extends AppCompatActivity
 {
@@ -33,6 +46,7 @@ public class SettingsActivity extends AppCompatActivity
     private TextView userName , userProf;
     private FirebaseAuth mAuth;
     private DatabaseReference mUsersDatabse;
+    private StorageReference mStorage;
     private LinearLayout logout , favorite , dpChange;
 
     @Override
@@ -53,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity
         favorite = (LinearLayout)findViewById(R.id.setting_favourite);
 
         mAuth = FirebaseAuth.getInstance();
+        mStorage = FirebaseStorage.getInstance().getReference();
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("User Settings");
@@ -94,6 +109,9 @@ public class SettingsActivity extends AppCompatActivity
                {
                    String name = dataSnapshot.child("name").getValue().toString();
                    String prof = dataSnapshot.child("profession").getValue().toString();
+                   String imgUrl = dataSnapshot.child("image").getValue().toString();
+
+                   Picasso.with(SettingsActivity.this).load(imgUrl);
 
                    userName.setText(name);
                    userProf.setText(prof);
@@ -104,6 +122,17 @@ public class SettingsActivity extends AppCompatActivity
 
                }
            });
+
+            dpChange.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    Intent galleryIntent = new Intent();
+                    galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    galleryIntent.setType("image/*");
+                    startActivityForResult(galleryIntent , 1);
+                }
+            });
 
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -120,4 +149,34 @@ public class SettingsActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == RESULT_OK)
+        {
+            Uri mImageUri = data.getData();
+
+            final File thumbFile = new File(mImageUri.getPath());
+
+            String userId = mAuth.getCurrentUser().getUid();
+
+            StorageReference fileStorage = mStorage.child("profile images").child(userId + ".jpg");
+
+            fileStorage.putFile(mImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
+                {
+                    if (task.isSuccessful()) {
+                        String downloadUrl = task.getResult().getDownloadUrl().toString();
+
+                        DatabaseReference imageDB = mUsersDatabse.child("image");
+                        imageDB.setValue(downloadUrl);
+                    }
+                }
+            });
+        }
+
+        }
 }
