@@ -32,7 +32,7 @@ public class FavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         mAuth=FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance().getReference().child         ("Favorite").child(mAuth.getCurrentUser().getUid());
+        firebaseDatabase=FirebaseDatabase.getInstance().getReference().child("Favorite").child(mAuth.getCurrentUser().getUid());
         recyclerView=(RecyclerView) findViewById(R.id.favorite_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(FavoriteActivity.this));
         recyclerView.setHasFixedSize(true);

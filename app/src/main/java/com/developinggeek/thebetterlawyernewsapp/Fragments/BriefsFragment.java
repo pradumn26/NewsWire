@@ -3,15 +3,12 @@ package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.BriefNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
@@ -31,12 +28,10 @@ import retrofit2.Response;
  */
 public class BriefsFragment extends Fragment
 {
-    private SwipeRefreshLayout swipeRefreshLayout;
+
     private ApiInterface apiInterface;
     private ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton floatingActionButton;
-    private TextView retryTextView;
 
     public BriefsFragment() {}
 
@@ -49,14 +44,6 @@ public class BriefsFragment extends Fragment
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchNewNews();
-            }
-        });
-
         mRecyclerView = (RecyclerView)view.findViewById(R.id.brief_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -65,18 +52,6 @@ public class BriefsFragment extends Fragment
         mProgress.setTitle("Loading...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
-
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.retry_fab);
-        retryTextView = (TextView) view.findViewById(R.id.retry_textView);
-        floatingActionButton.setVisibility(View.GONE);
-        retryTextView.setVisibility(View.GONE);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                retryTextView.setText("Retrying...");
-                fetchNewNews();
-            }
-        });
 
         fetchNewNews();
 
@@ -92,8 +67,6 @@ public class BriefsFragment extends Fragment
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
                 mProgress.cancel();
-                floatingActionButton.setVisibility(View.GONE);
-                retryTextView.setVisibility(View.GONE);
                 List<Posts> posts = response.body().getPosts();
 
                 mRecyclerView.setAdapter(new BriefNewsAdapter(posts , getContext()));
@@ -104,9 +77,6 @@ public class BriefsFragment extends Fragment
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 mProgress.cancel();
-                floatingActionButton.setVisibility(View.VISIBLE);
-                retryTextView.setVisibility(View.VISIBLE);
-                retryTextView.setText("Tap to retry");
             }
         });
     }
