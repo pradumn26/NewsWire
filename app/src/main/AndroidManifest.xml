@@ -46,7 +46,8 @@
         <activity android:name=".Activity.SettingsActivity" />
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.SplashScreenActivity" />
-        <activity android:name=".Activity.FavoriteActivity"></activity>
+        <activity android:name=".Activity.FavoriteActivity" />
+        <activity android:name=".Activity.ResetPasswordActivity"></activity>
     </application>
 
 </manifest>
