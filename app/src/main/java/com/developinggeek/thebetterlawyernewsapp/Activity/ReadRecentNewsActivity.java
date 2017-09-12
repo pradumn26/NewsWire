@@ -222,15 +222,6 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
         final String title = getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE).toString();
 
-        btn_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-
-
-            }
-        });
-
         btn_share_whatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
