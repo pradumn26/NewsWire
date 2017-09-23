@@ -188,11 +188,11 @@ public class InternationalFragment extends Fragment {
 
     private void fetchInternationalNews() {
         Call<PostsResponse> call = apiInterface.getCategoryById("3216");
-
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.GONE);
                 retryTextView.setVisibility(View.GONE);
                 fragmentScrim.setVisibility(View.VISIBLE);
@@ -215,6 +215,7 @@ public class InternationalFragment extends Fragment {
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.VISIBLE);
                 retryTextView.setVisibility(View.VISIBLE);
                 fragmentScrim.setVisibility(View.GONE);
@@ -222,5 +223,4 @@ public class InternationalFragment extends Fragment {
             }
         });
     }
-
 }

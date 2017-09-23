@@ -29,33 +29,23 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BriefsFragment extends Fragment
-{
-
+public class BriefsFragment extends Fragment {
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FloatingActionButton floatingActionButton;
+    private TextView retryTextView;
     private ApiInterface apiInterface;
     private ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton floatingActionButton;
-    private TextView retryTextView;
 
-    public BriefsFragment() {}
+    public BriefsFragment() {
+    }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        View view =  inflater.inflate(R.layout.fragment_briefs, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_briefs, container, false);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchNewNews();
-            }
-        });
 
         mRecyclerView = (RecyclerView)view.findViewById(R.id.brief_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -65,6 +55,14 @@ public class BriefsFragment extends Fragment
         mProgress.setTitle("Loading...");
         mProgress.setCanceledOnTouchOutside(false);
         mProgress.show();
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchNewNews();
+            }
+        });
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.retry_fab);
         retryTextView = (TextView) view.findViewById(R.id.retry_textView);
@@ -83,20 +81,19 @@ public class BriefsFragment extends Fragment
         return view;
     }
 
-    private void fetchNewNews()
-    {
+    private void fetchNewNews() {
         Call<PostsResponse> call = apiInterface.getSearchResults("new");
 
         call.enqueue(new Callback<PostsResponse>() {
             @Override
-            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
-            {
+            public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 mProgress.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.GONE);
                 retryTextView.setVisibility(View.GONE);
                 List<Posts> posts = response.body().getPosts();
 
-                mRecyclerView.setAdapter(new BriefNewsAdapter(posts , getContext()));
+                mRecyclerView.setAdapter(new BriefNewsAdapter(posts, getContext()));
 
                 mProgress.dismiss();
             }
@@ -104,9 +101,11 @@ public class BriefsFragment extends Fragment
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 mProgress.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.VISIBLE);
                 retryTextView.setVisibility(View.VISIBLE);
                 retryTextView.setText("Tap to retry");
+
             }
         });
     }

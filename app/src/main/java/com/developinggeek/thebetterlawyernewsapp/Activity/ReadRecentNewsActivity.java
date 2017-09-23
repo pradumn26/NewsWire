@@ -78,7 +78,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReadRecentNewsActivity extends AppCompatActivity {
-    View rootView;
     ImageView photoImageView;
     TextView headlineTextView;
     HtmlTextView storyTextView;
@@ -89,7 +88,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     ArrayList<Categories> categories;
     ImageButton btn_share_whatsapp, btn_share_insta;
     View mView;
-    DatabaseReference mRootRef , mCommentsDatabase , mUsersDatabse;
+    DatabaseReference mRootRef, mCommentsDatabase, mUsersDatabse;
     FirebaseAuth mAuth;
     LikeButton likeButton;
     Button btnComment;
@@ -100,7 +99,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= 21)
-            getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_news_photo_transition));
+            getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition                                     .shared_news_photo_transition));
 
         setContentView(R.layout.activity_read_recent_news);
 
@@ -112,9 +111,9 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         categoryRecyclerView = (RecyclerView) findViewById(R.id.category_recyclerView_in_readRecentNews_activity);
         btn_share_whatsapp = (ImageButton) findViewById(R.id.read_btn_share_whatsapp);
         mView = findViewById(R.id.read_news_parent);
-        btn_share_insta = (ImageButton)findViewById(R.id.read_btn_share_insta);
-        btnComment = (Button)findViewById(R.id.read_btn_comment);
-        edtComment = (TextInputLayout)findViewById(R.id.read_edt_comment);
+        btn_share_insta = (ImageButton) findViewById(R.id.read_btn_share_insta);
+        btnComment = (Button) findViewById(R.id.read_btn_comment);
+        edtComment = (TextInputLayout) findViewById(R.id.read_edt_comment);
 
         authorListView = (ListView) findViewById(R.id.read_news_activity_author_listview);
         AuthorLink authorLink = new AuthorLink();
@@ -129,8 +128,8 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference().child("Favorite");
-        mCommentsDatabase = FirebaseDatabase.getInstance().getReference().child("Comments").child(getIntent().getStringExtra(AppConstants.APP_ID));
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        mCommentsDatabase = FirebaseDatabase.getInstance().getReference().child("Comments").child(getIntent().getStringExtra(AppConstants            .APP_ID));
+        mUsersDatabse = FirebaseDatabase.getInstance().getReference().child("Users");
         if (mAuth.getCurrentUser() != null) {
             String uid = mAuth.getCurrentUser().getUid();
             mRootRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -163,7 +162,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
                     hashMap.put("Headline", getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
                     hashMap.put("Content", getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT));
                     hashMap.put("Liked", "true");
-                    Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(new Target() {
+                    Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO))                     .into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -171,11 +170,10 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
                             byte[] b = baos.toByteArray();
                             String temp = Base64.encodeToString(b, Base64.DEFAULT);
                             hashMap.put("Bitmap", temp);
-                            mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener                           (new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     mRootRef.keepSynced(true);
-
                                 }
                             });
 
@@ -205,7 +203,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         });
 
         if (getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO) != null)
-            Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into(photoImageView);
+            Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).into                (photoImageView);
         else
             photoImageView.setImageResource(R.mipmap.image_not_available);
         headlineTextView.setText(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
@@ -213,7 +211,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         authorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                new FinestWebView.Builder(ReadRecentNewsActivity.this).show(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL));
+                new FinestWebView.Builder(ReadRecentNewsActivity.this).show(getIntent().getStringExtra(AppConstants                                          .READ_RECENT_NEWS_ACTIVITY_AUTHOR_URL));
             }
         });
         categoryRecyclerView.setLayoutManager(new GridLayoutManager(ReadRecentNewsActivity.this, 2));
@@ -267,31 +265,27 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if(mAuth.getCurrentUser()!=null)
-                {
+            public void onClick(View view) {
+                if (mAuth.getCurrentUser() != null) {
                     final String comment = edtComment.getEditText().getText().toString();
 
-                    if(!TextUtils.isEmpty(comment))
-                    {
+                    if (!TextUtils.isEmpty(comment)) {
                         mUsersDatabse.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot)
-                            {
+                            public void onDataChange(DataSnapshot dataSnapshot) {
                                 String name = dataSnapshot.child("name").getValue().toString();
                                 String imageUrl = dataSnapshot.child("image").getValue().toString();
 
                                 HashMap commentMap = new HashMap();
-                                commentMap.put("name",name);
-                                commentMap.put("image",imageUrl);
-                                commentMap.put("comment",comment);
+                                commentMap.put("name", name);
+                                commentMap.put("image", imageUrl);
+                                commentMap.put("comment", comment);
 
                                 mCommentsDatabase.push().setValue(commentMap);
 
                                 edtComment.getEditText().setText("");
 
-                                Intent newIntent = new Intent(ReadRecentNewsActivity.this , ReadRecentNewsActivity.class);
+                                Intent newIntent = new Intent(ReadRecentNewsActivity.this, ReadRecentNewsActivity.class);
                                 newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(newIntent);
 
@@ -304,34 +298,28 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
                         });
 
                     }
-                }
-                else
-                {
+                } else {
                     Toast.makeText(ReadRecentNewsActivity.this, "You Need to Login First", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
-        FirebaseRecyclerAdapter<CommentsModel,CommentViewHolder> commentAdapter = new FirebaseRecyclerAdapter<CommentsModel, CommentViewHolder>
+        FirebaseRecyclerAdapter<CommentsModel, CommentViewHolder> commentAdapter = new FirebaseRecyclerAdapter<CommentsModel,                        CommentViewHolder>
                 (
-                        CommentsModel.class ,
+                        CommentsModel.class,
                         R.layout.comment_single_layout,
                         CommentViewHolder.class,
                         mCommentsDatabase
-                )
-        {
+                ) {
             @Override
-            protected void populateViewHolder(CommentViewHolder viewHolder, CommentsModel model, int position)
-            {
-               viewHolder.name.setText(model.getName());
-               viewHolder.text.setText(model.getComment());
+            protected void populateViewHolder(CommentViewHolder viewHolder, CommentsModel model, int position) {
+                viewHolder.name.setText(model.getName());
+                viewHolder.text.setText(model.getComment());
             }
         };
         commentsList.setAdapter(commentAdapter);
@@ -340,8 +328,9 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     private Uri getLocalBitmapUri(ImageView photoImageView) {
         Drawable drawable = photoImageView.getDrawable();
         Bitmap bmp = null;
-        if (drawable instanceof BitmapDrawable){
-            bmp = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+        if (drawable instanceof BitmapDrawable) {
+            //bmp = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+            bmp = loadBitmapFromView();
         } else {
             return null;
         }
@@ -362,18 +351,16 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
         return bmpUri;
     }
 
-    public static class CommentViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView name,text;
+    public static class CommentViewHolder extends RecyclerView.ViewHolder {
+        TextView name, text;
         ImageView userImg;
 
-        public CommentViewHolder(View itemView)
-        {
+        public CommentViewHolder(View itemView) {
             super(itemView);
 
-            name = (TextView)itemView.findViewById(R.id.comment_single_name);
-            text = (TextView)itemView.findViewById(R.id.comment_single_comment);
-            userImg = (ImageView)itemView.findViewById(R.id.comment_single_img);
+            name = (TextView) itemView.findViewById(R.id.comment_single_name);
+            text = (TextView) itemView.findViewById(R.id.comment_single_comment);
+            userImg = (ImageView) itemView.findViewById(R.id.comment_single_img);
         }
 
     }
