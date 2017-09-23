@@ -83,7 +83,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
     HtmlTextView storyTextView;
     ListView authorListView;
     ReadNewsAuthorListViewAdapter readNewsAuthorListViewAdapter;
-    RecyclerView categoryRecyclerView;
+    RecyclerView categoryRecyclerView, commentsList;
     CategoriesRecyclerViewAdapter categoriesRecyclerViewAdapter;
     ArrayList<Categories> categories;
     ImageButton btn_share_whatsapp, btn_share_insta;
