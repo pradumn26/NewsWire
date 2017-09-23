@@ -188,6 +188,7 @@ public class InternationalFragment extends Fragment {
 
     private void fetchInternationalNews() {
         Call<PostsResponse> call = apiInterface.getCategoryById("3216");
+
         call.enqueue(new Callback<PostsResponse>() {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
