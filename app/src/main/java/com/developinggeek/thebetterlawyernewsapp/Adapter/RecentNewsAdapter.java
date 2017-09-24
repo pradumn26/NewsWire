@@ -107,7 +107,7 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 viewHolder2.linearLayout1.setVisibility(View.GONE);
                 viewHolder2.linearLayout2.setVisibility(View.GONE);
                 final String imgUrl = posts.get(position).getThumbnail();
-                Picasso.with(mContext).load(imgUrl).into(viewHolder2.img);
+                Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.image_not_available).into(viewHolder2.img);
                 final View sharedView = viewHolder2.img;
 
                 viewHolder2.view.setOnClickListener(new View.OnClickListener() {

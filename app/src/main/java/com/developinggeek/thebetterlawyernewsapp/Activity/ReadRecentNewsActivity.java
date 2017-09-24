@@ -162,15 +162,17 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
                     hashMap.put("Headline", getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_HEADLINE));
                     hashMap.put("Content", getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_CONTENT));
                     hashMap.put("Liked", "true");
-                    Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO))                     .into(new Target() {
+                    Log.i("checking","1");
+                    Picasso.with(ReadRecentNewsActivity.this).load(getIntent().getStringExtra(AppConstants.READ_RECENT_NEWS_ACTIVITY_PHOTO)).placeholder(R.mipmap.image_not_available).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            Log.i("checking","bitmap loaded");
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                             byte[] b = baos.toByteArray();
                             String temp = Base64.encodeToString(b, Base64.DEFAULT);
                             hashMap.put("Bitmap", temp);
-                            mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener                           (new OnCompleteListener<Void>() {
+                            mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     mRootRef.keepSynced(true);
@@ -181,11 +183,28 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
                         @Override
                         public void onBitmapFailed(Drawable errorDrawable) {
+                            Log.i("checking","bitmap loaded 1");
 
                         }
 
                         @Override
                         public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            Log.i("checking","bitmap loaded 2");
+                            Bitmap bitmap= ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            Log.i("checking","bitmap loaded");
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            byte[] b = baos.toByteArray();
+                            String temp = Base64.encodeToString(b, Base64.DEFAULT);
+                            hashMap.put("Bitmap", temp);
+                            mRootRef.child(uid).child(getIntent().getStringExtra(AppConstants.APP_ID)).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    mRootRef.keepSynced(true);
+                                }
+                            });
+
 
                         }
                     });

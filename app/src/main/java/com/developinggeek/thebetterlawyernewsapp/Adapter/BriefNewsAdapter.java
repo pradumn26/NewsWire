@@ -46,7 +46,7 @@ public class BriefNewsAdapter extends RecyclerView.Adapter<BriefNewsAdapter.MyBr
         holder.content.setHtml(posts.get(position).getExcerpt());
 
         String imgUrl = posts.get(position).getThumbnail();
-        Picasso.with(mContext).load(imgUrl).into(holder.img);
+        Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.image_not_available).into(holder.img);
     }
 
     @Override
