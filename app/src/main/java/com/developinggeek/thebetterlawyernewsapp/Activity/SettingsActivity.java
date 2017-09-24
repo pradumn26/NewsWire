@@ -111,7 +111,9 @@ public class SettingsActivity extends AppCompatActivity
                    String prof = dataSnapshot.child("profession").getValue().toString();
                    String imgUrl = dataSnapshot.child("image").getValue().toString();
 
-                   Picasso.with(SettingsActivity.this).load(imgUrl);
+                   if(!imgUrl.equals("default")) {
+                       Picasso.with(SettingsActivity.this).load(imgUrl).into(userImg);
+                   }
 
                    userName.setText(name);
                    userProf.setText(prof);

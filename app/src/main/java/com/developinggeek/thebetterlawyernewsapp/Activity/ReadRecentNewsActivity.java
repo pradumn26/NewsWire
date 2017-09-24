@@ -197,6 +197,7 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
 
                         }
                     });
+                    mRootRef.keepSynced(true);
 
                 }
             }
@@ -333,6 +334,10 @@ public class ReadRecentNewsActivity extends AppCompatActivity {
             {
                viewHolder.name.setText(model.getName());
                viewHolder.text.setText(model.getComment());
+
+               String imgUrl = model.getImage();
+               if(!imgUrl.equals("default"))
+               { Picasso.with(ReadRecentNewsActivity.this).load(imgUrl).into(viewHolder.userImg); }
             }
         };
         commentsList.setAdapter(commentAdapter);

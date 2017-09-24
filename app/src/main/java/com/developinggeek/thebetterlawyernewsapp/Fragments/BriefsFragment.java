@@ -3,12 +3,15 @@ package com.developinggeek.thebetterlawyernewsapp.Fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.developinggeek.thebetterlawyernewsapp.Adapter.BriefNewsAdapter;
 import com.developinggeek.thebetterlawyernewsapp.Model.Posts;
@@ -32,6 +35,11 @@ public class BriefsFragment extends Fragment
     private ApiInterface apiInterface;
     private ProgressDialog mProgress;
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private View fragmentScrim;
+    private FloatingActionButton floatingActionButton;
+    private TextView retryTextView;
+
 
     public BriefsFragment() {}
 
@@ -48,6 +56,32 @@ public class BriefsFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
+        swipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchNewNews();
+            }
+        });
+
+        floatingActionButton= (FloatingActionButton) view.findViewById(R.id.retry_fab);
+        retryTextView= (TextView) view.findViewById(R.id.retry_textView);
+
+        floatingActionButton.setVisibility(View.GONE);
+        retryTextView.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                retryTextView.setText("Retrying...");
+                fetchNewNews();
+            }
+        });
+
+        mProgress = new ProgressDialog(getContext());
+        mProgress.setTitle("Loading...");
+        mProgress.setCanceledOnTouchOutside(false);
+        mProgress.show();
+
         fetchNewNews();
 
         return view;
@@ -61,10 +95,12 @@ public class BriefsFragment extends Fragment
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response)
             {
+                mProgress.cancel();
                 List<Posts> posts = response.body().getPosts();
 
                 mRecyclerView.setAdapter(new BriefNewsAdapter(posts , getContext()));
 
+                mProgress.dismiss();
             }
 
             @Override

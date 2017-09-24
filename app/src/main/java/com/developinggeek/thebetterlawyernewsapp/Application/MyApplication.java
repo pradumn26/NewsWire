@@ -5,9 +5,7 @@ import android.app.Application;
 import com.google.firebase.database.FirebaseDatabase;
 import com.onesignal.OneSignal;
 
-/**
- * Created by Pradumn on 19-Aug-17.
- */
+
 
 public class MyApplication extends Application{
     @Override
