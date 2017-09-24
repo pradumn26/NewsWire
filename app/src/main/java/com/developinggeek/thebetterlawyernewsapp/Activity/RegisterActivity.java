@@ -37,7 +37,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient.Base_URL_POST;
+//import static com.developinggeek.thebetterlawyernewsapp.Rest.ApiClient.Base_URL_POST;
 
 
 public class RegisterActivity extends AppCompatActivity
