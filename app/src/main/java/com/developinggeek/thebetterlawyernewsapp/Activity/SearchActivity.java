@@ -28,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
-    private SwipeRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog progressDialog;
     List<Posts> posts;
     private SearchNewsAdapter mAdapter;
@@ -96,6 +96,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.GONE);
                 retryTextView.setVisibility(View.GONE);
                 posts = response.body().getPosts();
@@ -118,6 +119,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.VISIBLE);
                 retryTextView.setVisibility(View.VISIBLE);
                 retryTextView.setText("Tap to retry");

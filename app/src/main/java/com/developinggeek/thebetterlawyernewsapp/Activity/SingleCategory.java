@@ -91,6 +91,7 @@ public class SingleCategory extends AppCompatActivity {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.GONE);
                 retryTextView.setVisibility(View.GONE);
                 posts = response.body().getPosts();
@@ -112,6 +113,7 @@ public class SingleCategory extends AppCompatActivity {
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.VISIBLE);
                 retryTextView.setVisibility(View.VISIBLE);
                 retryTextView.setText("Tap to retry");

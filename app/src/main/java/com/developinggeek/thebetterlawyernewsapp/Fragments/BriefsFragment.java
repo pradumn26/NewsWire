@@ -105,7 +105,6 @@ public class BriefsFragment extends Fragment {
                 floatingActionButton.setVisibility(View.VISIBLE);
                 retryTextView.setVisibility(View.VISIBLE);
                 retryTextView.setText("Tap to retry");
-
             }
         });
     }
