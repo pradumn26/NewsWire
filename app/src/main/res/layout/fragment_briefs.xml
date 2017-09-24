@@ -23,7 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="150dp"
-        android:src="@drawable/ic_action_voice_search"
+        android:src="@drawable/retry"
         app:backgroundTint="#64B5F6"
         app:fabSize="normal" />
 

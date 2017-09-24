@@ -2,40 +2,41 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:transitionGroup="true"
     android:id="@+id/read_news_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:transitionGroup="true"
     tools:context="com.developinggeek.thebetterlawyernewsapp.Activity.ReadRecentNewsActivity">
 
     <LinearLayout
+        android:id="@+id/scrollViewContainer"
+        android:transitionGroup="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:transitionGroup="true">
+        android:orientation="vertical">
 
         <android.support.v7.widget.CardView
+            android:transitionGroup="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_marginTop="3dp"
-            android:transitionGroup="true"
             app:cardElevation="20dp">
 
             <FrameLayout
+                android:transitionGroup="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:transitionGroup="true">
+                android:layout_height="wrap_content">
 
                 <ImageView
+                    android:transitionGroup="true"
                     android:id="@+id/read_news_activity_image_view"
                     android:layout_width="360dp"
                     android:layout_height="350dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:transitionGroup="true"
                     android:transitionName="newsPhotoTransitionFromMainActivityToReadNewsActivity" />
 
                 <View
