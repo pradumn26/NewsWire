@@ -192,6 +192,7 @@ public class HighCourtFragment extends Fragment {
             @Override
             public void onResponse(Call<PostsResponse> call, Response<PostsResponse> response) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.GONE);
                 retryTextView.setVisibility(View.GONE);
                 fragmentView.setVisibility(View.VISIBLE);
@@ -214,6 +215,7 @@ public class HighCourtFragment extends Fragment {
             @Override
             public void onFailure(Call<PostsResponse> call, Throwable t) {
                 progressDialog.cancel();
+                swipeRefreshLayout.setRefreshing(false);
                 floatingActionButton.setVisibility(View.VISIBLE);
                 retryTextView.setVisibility(View.VISIBLE);
                 fragmentView.setVisibility(View.GONE);
