@@ -78,16 +78,21 @@ public class RecentNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             animationToLeft.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+                    Log.i("try","1");
+
 
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    Log.i("try","2");
 
                 }
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
+                    Log.i("try","3");
+
                     viewHolder0.textView.setText(posts.get(newsStripCount).getTitle());
                     if(newsStripCount==(posts.size()-1))
                         newsStripCount=0;

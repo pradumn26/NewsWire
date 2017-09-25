@@ -3,9 +3,11 @@ package com.developinggeek.thebetterlawyernewsapp.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -57,9 +59,31 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
 
+
+    public static final String MY_PREFS_NAME = "MyINTRODUCTION";
+    public static final String INTRODUCTION="INTRODUCTION";
+    public static  int SPLASH_SCREEN_TIMEOUT=4000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        boolean introduction = prefs.getBoolean(INTRODUCTION,true);
+
+        if(introduction) {
+            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            introduction=false;
+            editor.putBoolean(INTRODUCTION,introduction);
+            editor.apply();
+
+            Intent intent = new Intent(this, IntroSlider.class);
+            startActivity(intent);
+        }
+
+
+
+
         OneSignal.startInit(this).setNotificationOpenedHandler(new ExampleNotificationOpenedHandler()).init();
 //        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if(Build.VERSION.SDK_INT >= 21)

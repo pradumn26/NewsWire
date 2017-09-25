@@ -60,6 +60,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.2.2'
     compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
     compile 'com.firebaseui:firebase-ui-database:2.3.0'
+    compile 'com.github.apl-devs:appintro:v4.2.2'
     testCompile 'junit:junit:4.12'
 }
 
