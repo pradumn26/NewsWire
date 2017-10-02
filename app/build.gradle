@@ -13,6 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+            cruncherEnabled = false
+        }
 
     }
     buildTypes {
@@ -63,6 +66,9 @@ dependencies {
     compile 'com.github.apl-devs:appintro:v4.2.2'
     testCompile 'junit:junit:4.12'
 }
+
+
+
 
 
 

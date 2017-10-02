@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private DatabaseReference mUsersDatabse;
     private StorageReference mStorage;
-    private LinearLayout logout , favorite , dpChange;
+    private LinearLayout logout , favorite , dpChange , aboutUs , contactUs , onlineOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,6 +65,12 @@ public class SettingsActivity extends AppCompatActivity
         dpChange = (LinearLayout)findViewById(R.id.setting_dp_change);
         logout = (LinearLayout)findViewById(R.id.setting_logout);
         favorite = (LinearLayout)findViewById(R.id.setting_favourite);
+
+        //-----------------CHANGED-------------------------------
+        aboutUs = (LinearLayout)findViewById(R.id.setting_about_us);
+        contactUs = (LinearLayout)findViewById(R.id.setting_contact);
+        onlineOptions = (LinearLayout)findViewById(R.id.setting_online_options);
+        //---------------------------------------------------------
 
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -85,6 +91,9 @@ public class SettingsActivity extends AppCompatActivity
             logout.setVisibility(View.GONE);
             favorite.setVisibility(View.GONE);
             dpChange.setVisibility(View.GONE);
+            //--------------------CHANGED-----------------------
+            onlineOptions.setVisibility(View.GONE);
+            //--------------------------------------------------
 
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,31 +106,31 @@ public class SettingsActivity extends AppCompatActivity
         }
         else
         {
-           offline.setVisibility(View.GONE);
+            offline.setVisibility(View.GONE);
 
-           String uid = mAuth.getCurrentUser().getUid();
+            String uid = mAuth.getCurrentUser().getUid();
 
-           mUsersDatabse = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+            mUsersDatabse = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
 
-           mUsersDatabse.addValueEventListener(new ValueEventListener() {
-               @Override
-               public void onDataChange(DataSnapshot dataSnapshot)
-               {
-                   String name = dataSnapshot.child("name").getValue().toString();
-                   String prof = dataSnapshot.child("profession").getValue().toString();
-                   String imgUrl = dataSnapshot.child("image").getValue().toString();
+            mUsersDatabse.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String prof = dataSnapshot.child("profession").getValue().toString();
+                    String imgUrl = dataSnapshot.child("image").getValue().toString();
 
-                   Picasso.with(SettingsActivity.this).load(imgUrl);
+                    Picasso.with(SettingsActivity.this).load(imgUrl);
 
-                   userName.setText(name);
-                   userProf.setText(prof);
-               }
+                    userName.setText(name);
+                    userProf.setText(prof);
+                }
 
-               @Override
-               public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-               }
-           });
+                }
+            });
 
             dpChange.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -146,6 +155,27 @@ public class SettingsActivity extends AppCompatActivity
             });
 
         }
+
+        //---------------------CHANGED-------------------------------------------------------------
+        contactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactIntent = new Intent(SettingsActivity.this , ContactUsActivity.class);
+                contactIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(contactIntent);
+            }
+        });
+
+        aboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent aboutIntent = new Intent(SettingsActivity.this , AboutUsActivity.class);
+                aboutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(aboutIntent);
+            }
+        });
+        //--------------------------------------------------------------------------------------------
 
     }
 
@@ -178,5 +208,5 @@ public class SettingsActivity extends AppCompatActivity
             });
         }
 
-        }
+    }
 }

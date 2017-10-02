@@ -17,9 +17,7 @@
         <activity
             android:name=".Activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -47,10 +45,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity android:name=".Activity.FavoriteActivity" />
-        <activity android:name=".Activity.ResetPasswordActivity"></activity>
-        <activity android:name=".Activity.IntroSlider"></activity>
+        <activity android:name=".Activity.ResetPasswordActivity" />
+        <activity android:name=".Activity.IntroSlider" />
+        <activity android:name=".Activity.ContactUsActivity" />
+        <activity android:name=".Activity.AboutUsActivity"></activity>
     </application>
 
 </manifest>

@@ -67,6 +67,8 @@ public class BriefNewsAdapter extends RecyclerView.Adapter<BriefNewsAdapter.MyBr
            img = (ImageView)itemView.findViewById(R.id.brief_img);
            title = (TextView)itemView.findViewById(R.id.brief_title);
            content = (HtmlTextView)itemView.findViewById(R.id.brief_content);
+
+
        }
    }
 

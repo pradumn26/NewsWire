@@ -7,6 +7,12 @@
     <string name="hint_email">Email</string>
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions</string>
     <string name="lbl_forgot_password">Forgot password?</string>
+    <string name="about_company">The Better Lawyer is a career enhancing and resource discovery platform for everyone in the legal industry in India. The Better Lawyer picks the basics from the age old legal industry and combines it with the booming information technology industry to provide useful and easy to use tools, resources and a community for everyone in the legal industry in India.
+
+The Better Lawyer is a true companion for anyone on their legal journey, right from selecting the right law school to progressing through law school and onto making one’s own space in the fraternity as a legal professional. Not only the professionals, aspirants and students - but even those in need of legal information, assistance, consultation, documentation and representation have something for them on The Better Lawyer.
+
+The Better Lawyer is an effort to add energy, efficiency and discoverability to the legal industry - in order to make a contribution towards a more efficient and fast moving legal system to cater to a population of over 1 billion Indians.</string>
+
 
     <string-array name="profession_names">
         <item>law student</item>
@@ -15,4 +21,3 @@
         <item>others</item>
     </string-array>
 </resources>
-
